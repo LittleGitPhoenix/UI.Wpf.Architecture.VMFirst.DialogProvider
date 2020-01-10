@@ -52,8 +52,8 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		/// <summary> The buttons caption. </summary>
 		internal string Caption { get; }
 
-		/// <summary> Callback that is invoke when the button is pressed. The return value determines, if the dialog will be closed afterwards, where <c>True</c> will close the dialog and <c>False</c> will not. </summary>
-		internal Func<DialogResult> Callback { get;  }
+		/// <summary> Asynchronous callback that is invoke when the button is pressed. The return value determines, if the dialog will be closed afterwards, where <c>True</c> will close the dialog and <c>False</c> will not. </summary>
+		internal Func<Task<DialogResult>> Callback { get;  }
 		
 		#endregion
 
@@ -139,8 +139,14 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 				buttonBehavior,
 				() =>
 				{
-					callback?.Invoke();
-					return dialogResult;
+					return Task.Run
+					(
+						() =>
+						{
+							callback?.Invoke();
+							return Task.FromResult(dialogResult);
+						}
+					);
 				}
 			)
 		{ }
@@ -154,6 +160,24 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		(
 			string caption,
 			Func<DialogResult> callback
+		)
+			: this
+			(
+				caption: caption,
+				buttonBehavior: DialogButtonBehavior.None,
+				callback: () => Task.Run(callback.Invoke)
+			)
+		{ }
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="caption"> The buttons caption. </param>
+		/// <param name="callback"> Optional asynchronous callback that is invoked when the button is pressed. The returned <see cref="DialogResult"/> determines, if the dialog will be closed afterwards. <see cref="DialogResult.None"/> means the dialog stays open, everything else closes it. </param>
+		public ButtonConfiguration
+		(
+			string caption,
+			Func<Task<DialogResult>> callback
 		)
 			: this
 			(
@@ -174,6 +198,26 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 			string caption,
 			DialogButtonBehavior buttonBehavior,
 			Func<DialogResult> callback
+		)
+			: this
+			(
+				caption: caption,
+				buttonBehavior: buttonBehavior,
+				callback: () => Task.Run(callback.Invoke)
+			)
+		{ }
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="caption"> The buttons caption. </param>
+		/// <param name="buttonBehavior"> The <see cref="DialogButtonBehavior"/> of the button. </param>
+		/// <param name="callback"> Optional asynchronous callback that is invoked when the button is pressed. The returned <see cref="DialogResult"/> determines, if the dialog will be closed afterwards. <see cref="DialogResult.None"/> means the dialog stays open, everything else closes it. </param>
+		public ButtonConfiguration
+		(
+			string caption,
+			DialogButtonBehavior buttonBehavior,
+			Func<Task<DialogResult>> callback
 		)
 		{
 			// Save parameters.

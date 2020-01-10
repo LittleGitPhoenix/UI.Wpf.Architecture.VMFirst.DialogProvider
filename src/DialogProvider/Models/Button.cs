@@ -60,9 +60,9 @@ namespace Phoenix.UI.Wpf.DialogProvider.Models
 			// Initialize fields.
 			this.Command = new CommandHandler
 			(
-				() =>
+				async() =>
 				{
-					var dialogResult = buttonConfiguration.Callback.Invoke();
+					var dialogResult = await buttonConfiguration.Callback.Invoke();
 					if (dialogResult != DialogResult.None) closeCallback?.Invoke(dialogResult);
 				},
 				this.IsEnabled

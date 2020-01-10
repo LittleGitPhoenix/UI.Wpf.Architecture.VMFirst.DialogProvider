@@ -10,16 +10,16 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 {
 	class BelieveViewModel
 	{
-		internal DialogResult OnAccept()
+		internal Task<DialogResult> OnAccept()
 		{
 			Trace.WriteLine($"Atta boy.");
-			return DialogResult.Yes;
+			return Task.FromResult(DialogResult.Yes);
 		}
 
-		internal DialogResult OnDecline()
+		internal Task<DialogResult> OnDecline()
 		{
 			Trace.WriteLine($"but you have to believe.");
-			return DialogResult.None;
+			return Task.FromResult(DialogResult.None);
 		}
 	}
 }

@@ -45,7 +45,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 			this.DialogManager = new DialogManager(new MetroDialogAssemblyViewProvider());
 
 			// Show a dialog before initialization of the dialog manager.
-			//this.ShowConstructorDialog();
+			this.ShowConstructorDialog();
 		}
 
 		#endregion
@@ -60,51 +60,54 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 			// Start showing dialogs.
 			DialogTask dialogTask = null;
 
-			//dialogTask = this.ShowSimpleDialog();
-			//await dialogTask;
-			
-			//dialogTask = this.ShowLongMessageDialog();
-			//await dialogTask;
+			dialogTask = this.ShowSimpleDialog();
+			await dialogTask;
 
-			//dialogTask = this.ShowLongTitleDialog();
-			//await dialogTask;
+			dialogTask = this.ShowLongMessageDialog();
+			await dialogTask;
 
-			//dialogTask = this.ShowAutoCancelDialog();
-			//await dialogTask;
+			dialogTask = this.ShowLongTitleDialog();
+			await dialogTask;
 
-			//dialogTask = this.ShowCanceledDialog();
-			//await dialogTask;
+			dialogTask = this.ShowAutoCancelDialog();
+			await dialogTask;
 
-			//var result = await this.ShowMessageWithContentDialog();
-			//if (result == DialogResult.Yes)
-			//{
-			//	dialogTask = await this.ShowComplexDialog();
-			//	await dialogTask;
-			//}
+			dialogTask = this.ShowCanceledDialog();
+			await dialogTask;
 
-			//dialogTask = this.ShowDisabledButtonDialog();
-			//await dialogTask;
+			var result = await this.ShowMessageWithContentDialog();
+			if (result == DialogResult.Yes)
+			{
+				dialogTask = await this.ShowComplexDialog();
+				await dialogTask;
+			}
 
-			dialogTask = this.ShowDialogThatNeedsClosePermission();
+			dialogTask = this.ShowDisabledButtonDialog();
+			await dialogTask;
+
+			dialogTask = this.ShowNestedDialog();
 			await dialogTask;
 			
-			//dialogTask = this.ShowExceptionDialogWithoutException();
-			//await dialogTask;
+			dialogTask = this.ShowDialogThatNeedsClosePermission();
+			await dialogTask;
 
-			//dialogTask = this.ShowSimpleExceptionDialog();
-			//await dialogTask;
+			dialogTask = this.ShowExceptionDialogWithoutException();
+			await dialogTask;
 
-			//dialogTask = this.ShowNestedExceptionDialog();
-			//await dialogTask;
+			dialogTask = this.ShowSimpleExceptionDialog();
+			await dialogTask;
 
-			//dialogTask = this.ShowMultipleExceptionsDialog();
-			//await dialogTask;
+			dialogTask = this.ShowNestedExceptionDialog();
+			await dialogTask;
 
-			//dialogTask = this.ShowContentDialog();
-			//await dialogTask;
+			dialogTask = this.ShowMultipleExceptionsDialog();
+			await dialogTask;
 
-			//dialogTask = this.ShowContentWithOwnButton();
-			//await dialogTask;
+			dialogTask = this.ShowContentDialog();
+			await dialogTask;
+
+			dialogTask = this.ShowContentWithOwnButton();
+			await dialogTask;
 		}
 
 		#region Messages
@@ -244,11 +247,11 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 		{
 			var buttonConfigurations = new List<ButtonConfiguration>();
 			
-			Func<DialogResult> NoCallback = () =>
+			Func<Task<DialogResult>> NoCallback = () =>
 			{
 				buttonConfigurations[0].IsEnabled = true;
 				buttonConfigurations[1].IsEnabled = false;
-				return DialogResult.None;
+				return Task.FromResult(DialogResult.None);
 			};
 
 			buttonConfigurations.Add
@@ -283,25 +286,53 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 				buttonConfigurations: buttonConfigurations
 			);
 		}
+		
+		internal DialogTask ShowNestedDialog()
+		{
+			var buttonConfigurations = new[]
+			{
+				new ButtonConfiguration
+				(
+					caption: "Yes",
+					dialogResult: DialogResult.Yes,
+					callback: () =>
+					{
+						this.DialogManager.ShowWarning("Annoying pop up", "Don't you hate it if this happens.", buttons: DialogButtons.Cancel).Wait();
+					}
+				)
+			};
 
+			return this.DialogManager.ShowMessage
+			(
+				messageModels: new List<MessageDialogModel>()
+				{
+					new MessageDialogModel(identifier: String.Empty, title: "Surprise", message: "Do you want to see some adds?")
+				},
+				buttonConfigurations: buttonConfigurations
+			);
+		}
+		
 		internal DialogTask ShowDialogThatNeedsClosePermission()
 		{
-			
+			//! Both version (synchronous and asynchronous should work.
 			Func<DialogResult> CloseCallback = () =>
 			{
-				var result = this.DialogManager
-					.ShowWarning("Please confirm", "Do you really want to do this? I really won't ask again.", buttons: DialogButtons.Yes | DialogButtons.No)
-					.Result
-					;
+				var result = this.DialogManager.ShowWarning("Please confirm", "Do you really want to do this? I really won't ask again.", buttons: DialogButtons.Yes | DialogButtons.No).Result;
 				return result == DialogResult.Yes ? DialogResult.Yes : DialogResult.None;
 			};
-			
+			Func<Task<DialogResult>> CloseCallbackAsync = async () =>
+			{
+				var result = await this.DialogManager.ShowWarning("Please confirm", "Do you really want to do this? I really won't ask again.", buttons: DialogButtons.Yes | DialogButtons.No);
+				return result == DialogResult.Yes ? DialogResult.Yes : DialogResult.None;
+			};
+
 			var buttonConfigurations = new[]
 			{
 				new ButtonConfiguration
 				(
 					caption: "Close",
-					callback: CloseCallback
+					//callback: CloseCallback
+					callback: CloseCallbackAsync
 				)
 			};
 

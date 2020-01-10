@@ -58,7 +58,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		private readonly FrameworkElement _containerView;
 
 		/// <summary> Queue of all content views. </summary>
-		private readonly ConcurrentQueue<Dialog> _dialogs;
+		private readonly ConcurrentStack<Dialog> _dialogs;
 
 		#endregion
 
@@ -91,7 +91,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 
 			// Initialize fields.
 			_containerView = dialogViewProvider.GetViewInstance(_containerViewModel);
-			_dialogs = new ConcurrentQueue<Dialog>();
+			_dialogs = new ConcurrentStack<Dialog>();
 			this.IsInitialized = false;
 		}
 
@@ -239,7 +239,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 			if (cancellationToken.IsCancellationRequested) return DialogTask.Killed;
 			
 			// Save it.
-			_dialogs.Enqueue(dialog);
+			_dialogs.Push(dialog);
 
 			// Show it.
 			this.ShowView();
@@ -366,7 +366,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		/// <param name="dialogResult"> The <see cref="DialogResult"/> for the removed view. </param>
 		private void RemoveTopMostView(DialogResult dialogResult)
 		{
-			if (!_dialogs.TryDequeue(out var dialog)) return;
+			if (!_dialogs.TryPop(out var dialog)) return;
 
 			//// Remove the close callback from the view model if possible.
 			//DialogHandler.TryRemoveCloseCallback(dialog.ContentView);
