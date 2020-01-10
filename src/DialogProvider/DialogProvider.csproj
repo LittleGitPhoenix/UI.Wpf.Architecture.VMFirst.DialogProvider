@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<TargetFrameworks>net45;netcoreapp3.1</TargetFrameworks>
+		<UseWPF>true</UseWPF>
+		<AssemblyName>Phoenix.UI.Wpf.DialogProvider</AssemblyName>
+		<RootNamespace>Phoenix.UI.Wpf.DialogProvider</RootNamespace>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeSymbols>true</IncludeSymbols>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Authors>Felix Leistner</Authors>
+		<Company>Little Phoenix</Company>
+		<Copyright>2020</Copyright>
+		<Description>Shows dialogs directly from the view model utilizing adorners.</Description>
+		<Version>1.2.0</Version>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="PropertyChanged.Fody" Version="3.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resources\Globalization\g11n.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>g11n.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Globalization\g11n.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>g11n.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+</Project>

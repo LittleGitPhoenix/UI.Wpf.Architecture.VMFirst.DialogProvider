@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<TargetFrameworks>net45</TargetFrameworks>
+		<UseWPF>true</UseWPF>
+		<AssemblyName>Phoenix.UI.Wpf.DialogProvider.Metro</AssemblyName>
+		<RootNamespace>Phoenix.UI.Wpf.DialogProvider.Metro</RootNamespace>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeSymbols>true</IncludeSymbols>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Authors>Felix Leistner</Authors>
+		<Company>Little Phoenix</Company>
+		<Description>Contains metro-styled views for the DialogProvider based on MahApps Metro.</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="MahApps.Metro" Version="1.6.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\DialogProvider\DialogProvider.csproj" />
+	</ItemGroup>
+
+</Project>

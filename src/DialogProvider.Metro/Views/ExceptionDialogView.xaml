@@ -1,0 +1,294 @@
+﻿<UserControl
+	x:Class="Phoenix.UI.Wpf.DialogProvider.Metro.Views.ExceptionDialogView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:Phoenix.UI.Wpf.DialogProvider.Metro.Views"
+	xmlns:model="clr-namespace:Phoenix.UI.Wpf.DialogProvider.Models;assembly=Phoenix.UI.Wpf.DialogProvider"
+	xmlns:class="clr-namespace:Phoenix.UI.Wpf.DialogProvider.Metro.Classes"
+	xmlns:converter="clr-namespace:Phoenix.UI.Wpf.DialogProvider.Metro.Converter"
+	xmlns:enumeration="clr-namespace:Phoenix.UI.Wpf.DialogProvider.Classes;assembly=Phoenix.UI.Wpf.DialogProvider"
+	xmlns:viewmodel="clr-namespace:Phoenix.UI.Wpf.DialogProvider.ViewModels;assembly=Phoenix.UI.Wpf.DialogProvider"
+	xmlns:localization="clr-namespace:Phoenix.UI.Wpf.DialogProvider.Resources.Globalization;assembly=Phoenix.UI.Wpf.DialogProvider"
+	d:DataContext="{d:DesignInstance viewmodel:ExceptionDialogViewModel, IsDesignTimeCreatable=false}"
+	d:DesignHeight="150"
+	d:DesignWidth="400"
+	Name="ExceptionDialog"
+	mc:Ignorable="d"
+	>
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+
+				<!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+
+				<!-- Accent and AppTheme setting -->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml" />
+				<!--<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />-->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+
+				<!-- Additional Controls -->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+
+	</UserControl.Resources>
+
+	<!--#region Canvas-->
+	<DockPanel
+		DockPanel.Dock="Top"
+		LastChildFill="True"
+		>
+
+		<!--#region Title-->
+		<TextBlock
+			Name="Title"
+			DockPanel.Dock="Top"
+			Margin="0,-10,0,0"
+			FontSize="{DynamicResource DialogTitleFontSize}"
+			Foreground="{DynamicResource ControlsValidationBrush}"
+			Text="{Binding Title, Mode=OneTime}"
+			TextWrapping="Wrap"
+			Visibility="{Binding Title, Mode=OneTime, Converter={converter:IsNullOrWhitespaceToVisibilityConverter}}"
+			/>
+		<!--#endregion-->
+
+		<DockPanel>
+			<DockPanel.Style>
+				<Style TargetType="DockPanel">
+					<Setter Property="Margin" Value="10,0,10,0" />
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding ElementName=Title, Path=Visibility}" Value="Visible">
+							<Setter Property="Margin" Value="10,10,10,0" />
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</DockPanel.Style>
+
+			<!--#region Dialog Message-->
+			<TextBlock
+				DockPanel.Dock="Top"
+				FontSize="{DynamicResource DialogMessageFontSize}"
+				Foreground="{DynamicResource BlackColorBrush}"
+				Text="{Binding Message, Mode=OneTime}"
+				TextWrapping="Wrap"
+				Visibility="{Binding Message, Mode=OneTime, Converter={converter:IsNullOrWhitespaceToVisibilityConverter}}"
+				/>
+			<!--#endregion-->
+
+			<!--#region Exceptions-->
+			<TabControl
+				ItemsSource="{Binding Exceptions, Mode=OneTime}"
+				SelectedItem="{Binding SelectedExceptionModel}"
+				TabStripPlacement="Top"
+				>
+
+				<TabControl.ItemTemplate>
+					<DataTemplate>
+						<TextBlock
+							Text="{Binding ExceptionName, Mode=OneTime}"
+							/>
+						<DataTemplate.Triggers>
+							<!-- Hide the header if only one item is available. -->
+							<!--<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}, Path=Items.Count}" Value="1">
+								<Setter Property="Visibility" Value="Collapsed" />
+							</DataTrigger>-->
+						</DataTemplate.Triggers>
+					</DataTemplate>
+				</TabControl.ItemTemplate>
+
+				<TabControl.ContentTemplate>
+					<DataTemplate
+						DataType="{x:Type model:ExceptionDialogModel}"
+						>
+
+						<TabControl
+							ItemsSource="{Binding Mode=OneTime}"
+							SelectedItem="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.SelectedInnerExceptionModel}"
+							>
+							<TabControl.Resources>
+								<Style x:Key="ChevronTabItemStyle" TargetType="TabItem">
+									<Setter Property="Template">
+										<Setter.Value>
+											<ControlTemplate
+												TargetType="{x:Type TabItem}"
+												>
+												<DockPanel
+													MaxWidth="{TemplateBinding MaxWidth}"
+													Margin="-15,0,0,0"
+													LastChildFill="True"
+													>
+													<Path
+														DockPanel.Dock="Left"
+														Data="M0,0 15,0 15,40 0,40 15,20"
+														Fill="{TemplateBinding Background}"
+														SnapsToDevicePixels="True"
+														/>
+													<Path
+														DockPanel.Dock="Right"
+														Data="M0,0 15,20 0,40"
+														Fill="{TemplateBinding Background}"
+														SnapsToDevicePixels="True"
+														/>
+													<Grid
+														DockPanel.Dock="Left"
+														>
+														<Rectangle
+															Fill="{TemplateBinding Background}"
+															SnapsToDevicePixels="True"
+															/>
+														<TextBlock
+															Margin="10,0"
+															HorizontalAlignment="Left"
+															VerticalAlignment="Center"
+															FontSize="{DynamicResource DialogMessageFontSize}"
+															Text="{TemplateBinding Header}"
+															/>
+													</Grid>
+												</DockPanel>
+											</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+
+									<Setter Property="Padding" Value="0,0,0,0" />
+									<Setter Property="Margin" Value="0,0,0,0" />
+									<Setter Property="Background" Value="Transparent" />
+									<Setter Property="Foreground" Value="{DynamicResource GrayBrush7}" />
+
+									<Style.Triggers>
+										<!-- Style for selected items -->
+										<Trigger Property="IsSelected" Value="True">
+											<Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
+											<Setter Property="Foreground" Value="{DynamicResource WhiteBrush}" />
+										</Trigger>
+
+										<!-- Hover style for not selected items. -->
+										<MultiTrigger>
+											<MultiTrigger.Conditions>
+												<Condition Property="IsMouseOver" Value="True" />
+												<Condition Property="IsSelected" Value="False" />
+											</MultiTrigger.Conditions>
+											<Setter Property="Background" Value="{DynamicResource GrayBrush7}" />
+											<Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
+										</MultiTrigger>
+
+										<!-- Hide the header if only one item is available. -->
+										<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}, Path=Items.Count}" Value="1">
+											<Setter Property="Visibility" Value="Collapsed" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</TabControl.Resources>
+
+							<!--#region Exception Name-->
+							<TabControl.ItemContainerStyle>
+								<Style BasedOn="{StaticResource ChevronTabItemStyle}" TargetType="TabItem">
+									<Setter Property="Header" Value="{Binding ExceptionName, Mode=OneTime}" />
+								</Style>
+							</TabControl.ItemContainerStyle>
+							<!--#endregion-->
+
+							<!--#region Exception Details-->
+							<TabControl.ContentTemplate>
+								<DataTemplate
+									DataType="{x:Type model:InnerExceptionDialogModel}"
+									>
+
+									<DockPanel
+										Margin="10,10,0,0"
+										LastChildFill="True"
+										>
+
+										<!--#region Exception Message-->
+										<TextBox
+											DockPanel.Dock="Top"
+											Background="Transparent"
+											BorderThickness="0"
+											FontSize="{DynamicResource DialogMessageFontSize}"
+											IsReadOnly="True"
+											Text="{Binding ExceptionMessage, Mode=OneTime}"
+											TextWrapping="Wrap"
+											Visibility="{Binding ExceptionMessage, Mode=OneTime, Converter={converter:IsNullOrWhitespaceToVisibilityConverter}}"
+											/>
+										<!--#endregion-->
+
+										<!--#region Stacktrace-->
+										<Expander
+											Margin="0,10,0,0"
+											Header="{x:Static localization:g11n.Stacktrace}"
+											IsExpanded="{Binding ElementName=ExceptionDialog, Path=DataContext.DialogOptions, Mode=OneWay, Converter={converter:EnumEqualsConverter}, ConverterParameter={x:Static enumeration:DialogOptions.AutoExpandStacktrace}}"
+											>
+											<Expander.Style>
+												<Style TargetType="Expander" BasedOn="{StaticResource {x:Type Expander}}">
+													<Style.Triggers>
+														<DataTrigger Binding="{Binding ElementName=ExceptionDialog, Path=DataContext.DialogOptions, Mode=OneWay, Converter={converter:EnumEqualsConverter}, ConverterParameter={x:Static enumeration:DialogOptions.HideStacktrace}}" Value="True">
+															<Setter Property="Visibility" Value="Collapsed" />
+														</DataTrigger>
+														<DataTrigger Binding="{Binding StackInformation, Mode=OneTime, Converter={converter:HasElementsConverter}}" Value="False">
+															<Setter Property="Visibility" Value="Collapsed" />
+														</DataTrigger>
+													</Style.Triggers>
+												</Style>
+											</Expander.Style>
+											<ScrollViewer
+												HorizontalScrollBarVisibility="Auto"
+												VerticalScrollBarVisibility="Auto"
+												>
+												<ItemsControl
+													ItemsSource="{Binding StackInformation, Mode=OneTime}"
+													>
+
+													<ItemsControl.ItemTemplate>
+														<DataTemplate>
+															<DockPanel>
+																<TextBox
+																	DockPanel.Dock="Left"
+																	Margin="20,2,5,2"
+																	Background="Transparent"
+																	BorderThickness="0"
+																	Foreground="{DynamicResource DisabledMenuItemForeground}"
+																	IsReadOnly="True"
+																	Text="➤"
+																	/>
+																<TextBox
+																	Margin="0,2,10,2"
+																	Background="Transparent"
+																	BorderThickness="0"
+																	Foreground="{DynamicResource DisabledMenuItemForeground}"
+																	IsReadOnly="True"
+																	Text="{Binding Mode=OneTime}"
+																	TextWrapping="Wrap"
+																	/>
+															</DockPanel>
+														</DataTemplate>
+													</ItemsControl.ItemTemplate>
+												</ItemsControl>
+											</ScrollViewer>
+										</Expander>
+										<!--#endregion-->
+
+									</DockPanel>
+
+								</DataTemplate>
+							</TabControl.ContentTemplate>
+							<!--#endregion-->
+
+						</TabControl>
+
+					</DataTemplate>
+				</TabControl.ContentTemplate>
+
+			</TabControl>
+			<!--#endregion-->
+
+		</DockPanel>
+
+	</DockPanel>
+	<!--#endregion-->
+
+</UserControl>
