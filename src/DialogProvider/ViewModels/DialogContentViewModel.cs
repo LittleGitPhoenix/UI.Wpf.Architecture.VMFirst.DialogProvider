@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region LICENSE NOTICE
+//! This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of this source code package.
+#endregion
+
+
+using System;
 using Phoenix.UI.Wpf.DialogProvider.Classes;
 
 namespace Phoenix.UI.Wpf.DialogProvider.ViewModels

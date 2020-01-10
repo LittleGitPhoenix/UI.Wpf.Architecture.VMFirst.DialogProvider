@@ -5,12 +5,14 @@
 		<UseWPF>true</UseWPF>
 		<AssemblyName>Phoenix.UI.Wpf.DialogProvider.Metro</AssemblyName>
 		<RootNamespace>Phoenix.UI.Wpf.DialogProvider.Metro</RootNamespace>
+		<Version>1.1.0</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IncludeSymbols>true</IncludeSymbols>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Authors>Felix Leistner</Authors>
 		<Company>Little Phoenix</Company>
 		<Description>Contains metro-styled views for the DialogProvider based on MahApps Metro.</Description>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -19,6 +21,13 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\DialogProvider\DialogProvider.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\LICENSE.md">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>
