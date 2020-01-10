@@ -12,7 +12,7 @@
 		<Company>Little Phoenix</Company>
 		<Copyright>2020</Copyright>
 		<Description>Shows dialogs directly from the view model utilizing adorners.</Description>
-		<Version>1.2.0</Version>
+		<Version>1.2.1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

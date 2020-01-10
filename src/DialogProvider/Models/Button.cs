@@ -54,7 +54,6 @@ namespace Phoenix.UI.Wpf.DialogProvider.Models
 		{
 			// Save parameters.
 			this.IsEnabled = buttonConfiguration.IsEnabled;
-			this.IsEnabled = true;
 			this.Caption = buttonConfiguration.Caption;
 			this.ButtonBehavior = buttonConfiguration.ButtonBehavior;
 
