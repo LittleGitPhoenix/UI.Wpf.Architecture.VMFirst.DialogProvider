@@ -4,11 +4,10 @@
 
 
 using System;
-using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {
 	/// <summary>
 	/// A custom <see cref="Task"/> that will be returned by most every method of the <see cref="DialogManager"/>. Can be used to interact with the dialog.

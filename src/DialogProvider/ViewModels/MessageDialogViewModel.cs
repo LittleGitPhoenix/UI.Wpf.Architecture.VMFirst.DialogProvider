@@ -5,12 +5,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Phoenix.UI.Wpf.DialogProvider.Classes;
-using Phoenix.UI.Wpf.DialogProvider.Models;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models;
 
-namespace Phoenix.UI.Wpf.DialogProvider.ViewModels
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModels
 {
 	/// <summary>
 	/// View model for simple messages.
@@ -42,9 +40,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.ViewModels
 		/// Constructor
 		/// </summary>
 		/// <param name="messageModels"> The <see cref="MessageDialogModel"/>s that will be displayed. </param>
-		/// <param name="dialogOptions"> Contains different options for the dialog. </param>
-		public MessageDialogViewModel(ICollection<MessageDialogModel> messageModels, DialogOptions dialogOptions)
-			: base(dialogOptions)
+		public MessageDialogViewModel(ICollection<MessageDialogModel> messageModels)
 		{
 			// Save parameters.
 			this.MessageModels = messageModels;

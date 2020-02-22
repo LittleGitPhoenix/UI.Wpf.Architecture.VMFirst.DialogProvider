@@ -5,17 +5,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
-using Phoenix.UI.Wpf.DialogProvider.Models;
-using Phoenix.UI.Wpf.DialogProvider.ViewModels;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModelInterfaces;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModels;
+using Phoenix.UI.Wpf.Architecture.VMFirst.ViewProvider;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {
 	/// <summary>
 	/// Manager responsible for showing dialogs.
@@ -34,7 +32,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 
 		private readonly DialogAssemblyViewProvider _dialogAssemblyViewProvider;
 
-		private readonly ViewProviders _viewProviders;
+		private readonly WrappingViewProvider _viewProvider;
 
 		private readonly DialogHandlers _dialogHandlers;
 
@@ -48,31 +46,30 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		#endregion
 
 		#region (De)Constructors
-
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="dialogAssemblyViewProvider"> An instance of a <see cref="DialogAssemblyViewProvider"/> used to resolve views for the direct dialog view models. </param>
-		public DialogManager(DialogAssemblyViewProvider dialogAssemblyViewProvider)
-			: this(dialogAssemblyViewProvider, new IViewProvider[]{ new AssemblyViewProvider(), new DefaultViewProvider() }) { }
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="dialogAssemblyViewProvider"> An instance of a <see cref="DialogAssemblyViewProvider"/> used to resolve views for the direct dialog view models. </param>
-		/// <param name="viewProviders"> Other <see cref="IViewProvider"/>s used to resolve views for their view models. </param>
-		public DialogManager
-		(
-			DialogAssemblyViewProvider dialogAssemblyViewProvider,
-			ICollection<IViewProvider> viewProviders
-		)
+		/// <param name="viewProviders"> Optional <see cref="IViewProvider"/>s used to resolve views for content view models. Default is only a <see cref="DefaultViewProvider"/>. </param>
+		public DialogManager(DialogAssemblyViewProvider dialogAssemblyViewProvider, params IViewProvider[] viewProviders)
 		{
 			// Save parameters.
-			_dialogAssemblyViewProvider = dialogAssemblyViewProvider;
+			_dialogAssemblyViewProvider = dialogAssemblyViewProvider ?? throw new ArgumentNullException(nameof(dialogAssemblyViewProvider));
 
 			// Initialize fields.
 			_isInitialized = 0;
-			_viewProviders = new ViewProviders(viewProviders);
+
+			// Create a default view provider if no others are specified.
+			if (!viewProviders?.Any() ?? true)
+			{
+				var setupCallback = DialogManagerViewModelHelper.CreateViewModelSetupCallback(dialogAssemblyViewProvider);
+				var defaultViewProvider = new DefaultViewProvider(setupCallback);
+				viewProviders = new IViewProvider[] {defaultViewProvider};
+			}
+
+			// Save the view providers into a wrapper instance.
+			_viewProvider = new WrappingViewProvider(viewProviders);
 			
 			// Build all necessary dialog handlers.
 			var dialogHandlers = DialogManager.GetDialogHandlers(_dialogAssemblyViewProvider);
@@ -86,28 +83,14 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		#region Initialization
 
 		/// <inheritdoc />
-		public void Initialize(FrameworkElement view)
+		public IDialogManager Initialize(FrameworkElement view)
 		{
 			// Allow initialization only once.
-			if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 1) return;
-
-			// Initialize all dialog handlers.
-			//_dialogHandlers.ForEach(handler =>
-			//{
-			//	switch (handler.DisplayLocation)
-			//	{
-			//		case DialogDisplayLocation.Self:
-			//			handler.Initialize(view);
-			//			break;
-
-			//		case DialogDisplayLocation.Window:
-			//			handler.Initialize(view is Window ? view : Window.GetWindow(view));
-			//			break;
-			//	}
-			//});
-
+			if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 1) return this;
+			
 			// Initialize all dialog handlers. Changes to the element will be made only by the handler, because the handler will wait for the element to be loaded and therefore it has more chances to find related element if needed (e.g. The element will most certainly not have a Window if it is not yet loaded).
 			_dialogHandlers.ForEach(handler => handler.Initialize(view));
+			return this;
 		}
 
 		/// <summary>
@@ -188,7 +171,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 			DialogOptions dialogOptions = DialogOptions.None,
 			CancellationToken cancellationToken = default
 		)
-			=> this.ShowMessage(new MessageDialogViewModel(messageModels, dialogOptions), buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
+			=> this.ShowMessage(new MessageDialogViewModel(messageModels), buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
 		
 		private DialogTask ShowMessage
 		(
@@ -203,7 +186,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 			// Try to resolve the content views of all message models if necessary.
 			foreach (var messageDialogModel in viewModel.MessageModels.Where(model => model.ContentViewModel != null))
 			{
-				messageDialogModel.ContentView = _viewProviders.GetViewInstance(messageDialogModel.ContentViewModel);
+				messageDialogModel.ContentView = _viewProvider.GetViewInstance(messageDialogModel.ContentViewModel);
 			}
 
 			return this.Show(viewModel, _dialogAssemblyViewProvider, buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
@@ -261,7 +244,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 			DialogOptions dialogOptions = DialogOptions.None,
 			CancellationToken cancellationToken = default
 		)
-			=> this.ShowMessage(new WarningDialogViewModel(messageModels, dialogOptions), buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
+			=> this.ShowMessage(new WarningDialogViewModel(messageModels), buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
 
 		#endregion
 
@@ -304,7 +287,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 			CancellationToken cancellationToken = default
 		)
 		{
-			var viewModel = new ExceptionDialogViewModel(title, message, exceptions, dialogOptions);
+			var viewModel = new ExceptionDialogViewModel(title, message, exceptions);
 			var buttonConfigurations = new[] {DefaultButtonConfigurations.OkButtonConfiguration};
 			return this.Show(viewModel, _dialogAssemblyViewProvider, buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
 		}
@@ -336,7 +319,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 			CancellationToken cancellationToken = default
 		)
 		{
-			return this.Show(viewModel, _viewProviders, buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
+			return this.Show(viewModel, _viewProvider, buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
 		}
 
 		#endregion
@@ -432,7 +415,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		#endregion
 
 		/// <summary> Returns a string representation of the object. </summary>
-		public override string ToString() => $"[<{this.GetType().Name}> :: Initialized: {this.IsInitialized} | DialogHandlers: {_dialogHandlers.Count} | ViewProviders: {_viewProviders.Count}]";
+		public override string ToString() => $"[<{this.GetType().Name}> :: Initialized: {this.IsInitialized} | DialogHandlers: {_dialogHandlers.Count}]";
 
 		#endregion
 	}

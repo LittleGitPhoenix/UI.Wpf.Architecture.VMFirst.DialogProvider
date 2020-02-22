@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {
 	/// <summary>
 	/// Collection of <see cref="DialogHandler"/>s.

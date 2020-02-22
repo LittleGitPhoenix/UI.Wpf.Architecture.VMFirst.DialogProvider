@@ -3,7 +3,7 @@
 #endregion
 
 
-namespace Phoenix.UI.Wpf.DialogProvider.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {
 	/// <summary>
 	/// Defines different behaviors of buttons.

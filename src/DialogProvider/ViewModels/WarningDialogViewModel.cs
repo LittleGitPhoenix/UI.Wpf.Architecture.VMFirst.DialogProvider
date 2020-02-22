@@ -4,10 +4,10 @@
 
 
 using System.Collections.Generic;
-using Phoenix.UI.Wpf.DialogProvider.Classes;
-using Phoenix.UI.Wpf.DialogProvider.Models;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models;
 
-namespace Phoenix.UI.Wpf.DialogProvider.ViewModels
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModels
 {
 	/// <summary>
 	/// View model for warnings.
@@ -15,7 +15,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.ViewModels
 	public class WarningDialogViewModel : MessageDialogViewModel
 	{
 		/// <inheritdoc />
-		public WarningDialogViewModel(ICollection<MessageDialogModel> messageModels, DialogOptions dialogOptions)
-			: base(messageModels, dialogOptions) { }
+		public WarningDialogViewModel(ICollection<MessageDialogModel> messageModels)
+			: base(messageModels) { }
 	}
 }

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Showcase.Views
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Showcase.Views
 {
 	/// <summary>
 	/// Interaction logic for BelieveView.xaml

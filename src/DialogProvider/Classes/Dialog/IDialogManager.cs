@@ -6,9 +6,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Phoenix.UI.Wpf.DialogProvider.Models;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {
 	/// <summary>
 	/// Interface for dialog managers that are responsible for showing dialogs.
@@ -24,7 +24,8 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		/// Initializes the current instance with the <paramref name="view"/> needed to display a dialog.
 		/// </summary>
 		/// <param name="view"> The <see cref="System.Windows.FrameworkElement"/> that will be used to display a dialog. </param>
-		void Initialize(System.Windows.FrameworkElement view);
+		/// <returns> The same instance of <see cref="IDialogManager"/> that was just initialized. This is useful for chaining. </returns>
+		IDialogManager Initialize(System.Windows.FrameworkElement view);
 
 		#endregion
 

@@ -1,8 +1,8 @@
 ﻿<Application
-	x:Class="Phoenix.UI.Wpf.DialogProvider.App"
+	x:Class="Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.App"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:local="clr-namespace:Phoenix.UI.Wpf.DialogProvider"
+	xmlns:local="clr-namespace:Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider"
 	StartupUri="Views/MainWindow.xaml"
 	>
 	<Application.Resources>

@@ -13,7 +13,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Metro.Converter
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Converter
 {
 	/// <summary>
 	/// Base class for custom converters.

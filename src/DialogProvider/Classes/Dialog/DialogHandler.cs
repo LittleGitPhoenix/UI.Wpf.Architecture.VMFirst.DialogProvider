@@ -8,20 +8,13 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using Phoenix.UI.Wpf.DialogProvider.ViewModels;
-using Button = Phoenix.UI.Wpf.DialogProvider.Models.Button;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModels;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {
 	/// <summary>
 	/// Handler for showing dialogs utilizing <see cref="Adorner"/>s.
@@ -416,7 +409,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		}
 
 		///// <summary>
-		///// Tries to add the internal <see cref="Revoke(DialogResult)"/> or <see cref="Revoke(bool)"/> method to a <see cref="ICloseableViewModel.RequestClose"/> callback in the <paramref name="view"/>s view model.
+		///// Tries to add the internal <see cref="Revoke(DialogResult)"/> or <see cref="Revoke(bool)"/> method to a <see cref="ICloseableDialogContentViewModel.RequestClose"/> callback in the <paramref name="view"/>s view model.
 		///// </summary>
 		///// <param name="view"> The view whose view model  that is examined for a close callback. </param>
 		///// <returns> <c>True</c> on success, otherwise <c>False</c>. </returns>
@@ -440,26 +433,26 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 
 		//		try
 		//		{
-		//			if (viewModel is ICloseableViewModel closeableViewModel)
+		//			if (viewModel is ICloseableDialogContentViewModel closeableViewModel)
 		//			{
-		//				Trace.WriteLine($"{this.GetType().Name.ToUpper()}: View model '{closeableViewModel}' is {nameof(ICloseableViewModel)}, close callback will be set.");
+		//				Trace.WriteLine($"{this.GetType().Name.ToUpper()}: View model '{closeableViewModel}' is {nameof(ICloseableDialogContentViewModel)}, close callback will be set.");
 		//				closeableViewModel.RequestClose = this.Revoke;
 		//			}
 		//			else
 		//			{
-		//				var closeCallbackProperty = viewModel.GetType().GetProperty(nameof(ICloseableViewModel.RequestClose), BindingFlags.Public | BindingFlags.Instance);
+		//				var closeCallbackProperty = viewModel.GetType().GetProperty(nameof(ICloseableDialogContentViewModel.RequestClose), BindingFlags.Public | BindingFlags.Instance);
 		//				if (closeCallbackProperty != null)
 		//				{
 
 		//					var propertyType = closeCallbackProperty.PropertyType;
 		//					if (typeof(Action<DialogResult>).IsAssignableFrom(propertyType))
 		//					{
-		//						Trace.WriteLine($"{this.GetType().Name.ToUpper()}: View model '{viewModel}' has proper '{nameof(ICloseableViewModel.RequestClose)}' property, close callback will be set.");
+		//						Trace.WriteLine($"{this.GetType().Name.ToUpper()}: View model '{viewModel}' has proper '{nameof(ICloseableDialogContentViewModel.RequestClose)}' property, close callback will be set.");
 		//						closeCallbackProperty.SetValue(viewModel, (Action<DialogResult>) this.Revoke);
 		//					}
 		//					else if (typeof(Action<bool>).IsAssignableFrom(propertyType))
 		//					{
-		//						Trace.WriteLine($"{this.GetType().Name.ToUpper()}: View model '{viewModel}' has proper '{nameof(ICloseableViewModel.RequestClose)}' property, close callback will be set.");
+		//						Trace.WriteLine($"{this.GetType().Name.ToUpper()}: View model '{viewModel}' has proper '{nameof(ICloseableDialogContentViewModel.RequestClose)}' property, close callback will be set.");
 		//						closeCallbackProperty?.SetValue(viewModel, (Action<bool>) this.Revoke);
 		//					}
 		//				}
@@ -477,7 +470,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		//}
 
 		///// <summary>
-		///// Tries to remove the <see cref="ICloseableViewModel.RequestClose"/> callback from the <paramref name="view"/>s view model
+		///// Tries to remove the <see cref="ICloseableDialogContentViewModel.RequestClose"/> callback from the <paramref name="view"/>s view model
 		///// </summary>
 		///// <param name="view"> The view whose view model  that is examined for a close callback. </param>
 		///// <returns> <c>True</c> on success, otherwise <c>False</c>. </returns>
@@ -490,13 +483,13 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		//		frameworkElement.Dispatcher.Invoke(() =>
 		//		{
 		//			var viewModel = frameworkElement.DataContext;
-		//			if (viewModel is ICloseableViewModel closeableViewModel)
+		//			if (viewModel is ICloseableDialogContentViewModel closeableViewModel)
 		//			{
 		//				closeableViewModel.RequestClose = null;
 		//			}
 		//			else
 		//			{
-		//				var closeCallbackProperty = viewModel.GetType().GetProperty(nameof(ICloseableViewModel.RequestClose), BindingFlags.Public | BindingFlags.Instance);
+		//				var closeCallbackProperty = viewModel.GetType().GetProperty(nameof(ICloseableDialogContentViewModel.RequestClose), BindingFlags.Public | BindingFlags.Instance);
 		//				closeCallbackProperty?.SetValue(viewModel, null);
 		//			}
 		//		});

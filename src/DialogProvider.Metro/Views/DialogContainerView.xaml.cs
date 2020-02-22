@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Metro.Views
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Views
 {
 	/// <summary>
 	/// Interaction logic for DialogContainerView.xaml

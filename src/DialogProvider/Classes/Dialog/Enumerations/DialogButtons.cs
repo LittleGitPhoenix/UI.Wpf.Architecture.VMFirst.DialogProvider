@@ -5,7 +5,7 @@
 
 using System;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {
 	/// <summary>
 	/// Defines which default buttons the dialog will show. Will be converted to <see cref="ButtonConfiguration"/>s

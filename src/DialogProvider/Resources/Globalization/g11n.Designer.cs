@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Phoenix.UI.Wpf.DialogProvider.Resources.Globalization {
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Resources.Globalization {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Resources.Globalization {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Phoenix.UI.Wpf.DialogProvider.Resources.Globalization.g11n", typeof(g11n).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Resources.Globalization.g11n", typeof(g11n).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -1,12 +1,12 @@
 ﻿<UserControl
-	x:Class="Phoenix.UI.Wpf.DialogProvider.Metro.Views.ButtonView"
+	x:Class="Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Views.ButtonView"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:local="clr-namespace:Phoenix.UI.Wpf.DialogProvider.Metro.Views"
-	xmlns:model="clr-namespace:Phoenix.UI.Wpf.DialogProvider.Models;assembly=Phoenix.UI.Wpf.DialogProvider"
-	xmlns:class="clr-namespace:Phoenix.UI.Wpf.DialogProvider.Metro.Classes"
+	xmlns:local="clr-namespace:Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Views"
+	xmlns:model="clr-namespace:Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models;assembly=Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider"
+	xmlns:class="clr-namespace:Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Classes"
 	Name="ButtonBar"
 	mc:Ignorable="d"
 	>

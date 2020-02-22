@@ -12,9 +12,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Showcase.ViewModels;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Showcase.Views
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Showcase.Views
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

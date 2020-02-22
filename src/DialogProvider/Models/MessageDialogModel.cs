@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Phoenix.UI.Wpf.DialogProvider.ViewModels;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModels;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Models
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models
 {
 	/// <summary>
 	/// Model for <see cref="MessageDialogViewModel"/> or <see cref="WarningDialogViewModel"/>.

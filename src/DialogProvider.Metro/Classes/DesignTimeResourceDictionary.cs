@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Metro.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Classes
 {
     /// <summary>
     /// Special <see cref="ResourceDictionary"/> for design mode purposes.

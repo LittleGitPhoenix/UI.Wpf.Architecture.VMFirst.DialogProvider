@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Metro.Views
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Views
 {
     /// <summary>
     /// Interaction logic for ButtonView.xaml

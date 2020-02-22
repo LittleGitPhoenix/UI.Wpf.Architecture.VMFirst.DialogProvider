@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Metro.Converter
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Converter
 {
 	/// <summary>
 	/// Checks if the bound <see cref="String"/> is null or whitespace and converts it into configurable <see cref="Visibility"/>.

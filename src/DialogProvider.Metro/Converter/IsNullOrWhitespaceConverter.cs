@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Metro.Converter
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Converter
 {
 	/// <summary>
 	/// Checks if the bound <see cref="String"/> is null or whitespace.

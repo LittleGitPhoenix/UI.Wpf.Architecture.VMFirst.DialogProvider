@@ -3,31 +3,41 @@
 	<PropertyGroup>
 		<TargetFrameworks>net45</TargetFrameworks>
 		<UseWPF>true</UseWPF>
-		<AssemblyName>Phoenix.UI.Wpf.DialogProvider.Metro</AssemblyName>
-		<RootNamespace>Phoenix.UI.Wpf.DialogProvider.Metro</RootNamespace>
-		<Version>1.1.0</Version>
+		<AssemblyName>Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro</AssemblyName>
+		<RootNamespace>Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro</RootNamespace>
+		<Authors>Felix Leistner</Authors>
+		<Company>Little Phoenix</Company>
+		<Copyright>2020</Copyright>
+		<Version>2.0.0</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IncludeSymbols>true</IncludeSymbols>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<Authors>Felix Leistner</Authors>
-		<Company>Little Phoenix</Company>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<Description>Contains metro-styled views for the DialogProvider based on MahApps Metro.</Description>
+		<PackageIcon>nuget.png</PackageIcon>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<PackageIconUrl>https://www.little-phoenix.de/nuget/nuget.ico</PackageIconUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="MahApps.Metro" Version="1.6.5" />
+		<None Include="..\..\nuget.png" Pack="true" PackagePath="" Link="⬙\nuget.png" />
+		<None Include="..\..\README.md" Pack="true" PackagePath="" Link="⬙\README.md" />
+		<None Include="..\..\LICENSE.md" Pack="true" PackagePath="" Link="⬙\LICENSE.md" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\DialogProvider\DialogProvider.csproj" />
+		<PackageReference Include="MahApps.Metro" Version="1.6.5" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="..\..\LICENSE.md">
-	    <Pack>True</Pack>
-	    <PackagePath></PackagePath>
-	  </None>
+		<ProjectReference Include="..\DialogProvider\DialogProvider.csproj" />
 	</ItemGroup>
+
+	<!-- Move the created NuGet packages into another folder. -->
+	<Target Name="MovePackage" AfterTargets="Pack">
+		<Move SourceFiles="$(BaseOutputPath)$(Configuration)\$(PackageId).$(PackageVersion).symbols.nupkg" DestinationFiles="$(BaseOutputPath)$(Configuration)\..\..\..\..\.nuget\$(PackageId).$(PackageVersion).nupkg" />
+		<Delete Files="$(BaseOutputPath)$(Configuration)\$(PackageId).$(PackageVersion).nupkg" />
+	</Target>
 
 </Project>

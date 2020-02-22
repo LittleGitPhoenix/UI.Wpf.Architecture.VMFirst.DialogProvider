@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Phoenix.UI.Wpf.DialogProvider.Classes;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Showcase.ViewModels
 {
 	class BelieveViewModel
 	{

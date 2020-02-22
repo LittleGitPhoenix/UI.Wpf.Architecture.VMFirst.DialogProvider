@@ -4,28 +4,25 @@
 
 
 using System;
-using Phoenix.UI.Wpf.DialogProvider.Classes;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModelInterfaces;
 
-namespace Phoenix.UI.Wpf.DialogProvider.ViewModels
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModels
 {
 	/// <summary>
 	/// Base class for view models that can be displayed within a dialog.
 	/// </summary>
-	public abstract class DialogContentViewModel : ICloseableViewModel
+	public abstract class DialogContentViewModel : ICloseableDialogContentViewModel, IOptionsAwareDialogContentViewModel
 	{
 		/// <inheritdoc />
-		public Action<DialogResult> RequestClose { get; set; }
+		public Action<DialogResult> RequestClose { get; internal set; }
 
-		/// <summary> Contains different options for the dialog. </summary>
-		public DialogOptions DialogOptions { get; }
-
+		/// <inheritdoc />
+		public DialogOptions DialogOptions { get; internal set; }
+		
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		/// <param name="dialogOptions"> Contains different options for the dialog. </param>
-		protected DialogContentViewModel(DialogOptions dialogOptions)
-		{
-			this.DialogOptions = dialogOptions;
-		}
+		protected DialogContentViewModel() { }
 	}
 }

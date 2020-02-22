@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Models
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models
 {
 	/// <summary>
 	/// Readable representation of an <see cref="Exception"/>.

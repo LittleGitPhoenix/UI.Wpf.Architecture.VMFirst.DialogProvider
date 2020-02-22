@@ -4,15 +4,10 @@
 
 
 using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Phoenix.UI.Wpf.DialogProvider.Models;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {
 	/// <summary>
 	/// Configuration of a <see cref="Button"/>.

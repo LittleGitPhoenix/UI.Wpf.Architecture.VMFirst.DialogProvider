@@ -5,17 +5,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media;
-using Phoenix.UI.Wpf.DialogProvider.Classes;
-using Phoenix.UI.Wpf.DialogProvider.Models;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models;
 
-namespace Phoenix.UI.Wpf.DialogProvider.ViewModels
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModels
 {
+	/// <summary>
+	/// <para> This is the container model whose bound view will be displayed within the <see cref="ContentAdorner"/> of the <see cref="DialogHandler"/>. </para>
+	/// <para> This view model is responsible notifying its bound view, that the content has been changed, along with handling callback from the configured buttons. </para>
+	/// <para> The bound view is the frame of all dialogs. It for example shows the configured buttons and the transparency toggle. </para>
+	/// </summary>
 	[PropertyChanged.AddINotifyPropertyChangedInterface]
 	internal class DialogContainerViewModel : IDialogContainerViewModel
 	{

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Metro.Converter
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Converter
 {
 	/// <summary>
 	/// Checks if the bound <see cref="Enum"/> value matches the <see cref="Enum"/> value of the <c>ConverterParameter</c>.

@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Phoenix.UI.Wpf.DialogProvider.Classes;
-using Phoenix.UI.Wpf.DialogProvider.Metro;
-using Phoenix.UI.Wpf.DialogProvider.Models;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Showcase.ViewModels
 {
 	class InnerViewModel
 	{
@@ -41,11 +39,12 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 			// Save parameters.
 
 			// Initialize fields.
-			this.DefaultDialogManager = new DefaultDialogManager(new MetroDialogAssemblyViewProvider());
-			this.DialogManager = new DialogManager(new MetroDialogAssemblyViewProvider());
+			var viewProvider = new MetroDialogAssemblyViewProvider();
+			this.DefaultDialogManager = new DefaultDialogManager(viewProvider);
+			this.DialogManager = new DialogManager(viewProvider);
 
-			// Show a dialog before initialization of the dialog manager.
-			this.ShowConstructorDialog();
+			//// Show a dialog before initialization of the dialog manager.
+			//this.ShowConstructorDialog();
 		}
 
 		#endregion
@@ -54,60 +53,69 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 
 		internal async void Loaded(FrameworkElement view)
 		{
-			// Get a dialog manager.
+			// Initialize the dialog manager.
 			this.DialogManager.Initialize(view);
 
 			// Start showing dialogs.
 			DialogTask dialogTask = null;
 
-			dialogTask = this.ShowSimpleDialog();
-			await dialogTask;
-
-			dialogTask = this.ShowLongMessageDialog();
-			await dialogTask;
-
-			dialogTask = this.ShowLongTitleDialog();
-			await dialogTask;
-
-			dialogTask = this.ShowAutoCancelDialog();
-			await dialogTask;
-
-			dialogTask = this.ShowCanceledDialog();
-			await dialogTask;
-
-			var result = await this.ShowMessageWithContentDialog();
-			if (result == DialogResult.Yes)
-			{
-				dialogTask = await this.ShowComplexDialog();
-				await dialogTask;
-			}
-
-			dialogTask = this.ShowDisabledButtonDialog();
-			await dialogTask;
-
-			dialogTask = this.ShowNestedDialog();
-			await dialogTask;
+			//dialogTask = this.ShowSimpleDialog();
+			//await dialogTask;
 			
-			dialogTask = this.ShowDialogThatNeedsClosePermission();
-			await dialogTask;
+			//dialogTask = this.ShowMessageInWindow();
+			//await dialogTask;
+			
+			//dialogTask = this.ShowMessageInAdornedView();
+			//await dialogTask;
 
-			dialogTask = this.ShowExceptionDialogWithoutException();
-			await dialogTask;
+			//dialogTask = this.ShowLongMessageDialog();
+			//await dialogTask;
 
-			dialogTask = this.ShowSimpleExceptionDialog();
-			await dialogTask;
+			//dialogTask = this.ShowLongTitleDialog();
+			//await dialogTask;
+
+			//dialogTask = this.ShowAutoCancelDialog();
+			//await dialogTask;
+
+			//dialogTask = this.ShowCanceledDialog();
+			//await dialogTask;
+
+			//var result = await this.ShowMessageWithContentDialog();
+			//if (result == DialogResult.Yes)
+			//{
+			//	dialogTask = await this.ShowComplexDialog();
+			//	await dialogTask;
+			//}
+
+			//dialogTask = this.ShowDisabledButtonDialog();
+			//await dialogTask;
+
+			//dialogTask = this.ShowNestedDialog();
+			//await dialogTask;
+
+			//dialogTask = this.ShowDialogThatNeedsClosePermission();
+			//await dialogTask;
+
+			//dialogTask = this.ShowWarningDialog();
+			//await dialogTask;
+
+			//dialogTask = this.ShowExceptionDialogWithoutException();
+			//await dialogTask;
+
+			//dialogTask = this.ShowSimpleExceptionDialog();
+			//await dialogTask;
 
 			dialogTask = this.ShowNestedExceptionDialog();
 			await dialogTask;
 
-			dialogTask = this.ShowMultipleExceptionsDialog();
-			await dialogTask;
+			//dialogTask = this.ShowMultipleExceptionsDialog();
+			//await dialogTask;
 
-			dialogTask = this.ShowContentDialog();
-			await dialogTask;
+			//dialogTask = this.ShowContentDialog();
+			//await dialogTask;
 
-			dialogTask = this.ShowContentWithOwnButton();
-			await dialogTask;
+			//dialogTask = this.ShowContentWithOwnButton();
+			//await dialogTask;
 		}
 
 		#region Messages
@@ -126,6 +134,26 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 			return this.DialogManager.ShowMessage
 			(
 				message: "This message has no title."
+			);
+		}
+
+		internal DialogTask ShowMessageInWindow()
+		{
+			return this.DialogManager.ShowMessage
+			(
+				title: "Dialog",
+				message: "I am displayed within the applications main window.",
+				displayLocation: DialogDisplayLocation.Window
+			);
+		}
+
+		internal DialogTask ShowMessageInAdornedView()
+		{
+			return this.DialogManager.ShowMessage
+			(
+				title: "Dialog",
+				message: "I am displayed within my adorned view.",
+				displayLocation: DialogDisplayLocation.Self
 			);
 		}
 		
@@ -216,6 +244,20 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 					new MessageDialogModel(identifier: "Ninth", title: "Commandment", message: "You shall not bear false witness against your neighbor."),
 					new MessageDialogModel(identifier: "Tenth", title: "Commandment", message: "You shall not covet your neighbor's house; you shall not covet your neighbor's wife, nor his male servant, nor his female servant, nor his ox, nor his donkey, nor anything that is your neighbor's.")
 				};
+
+				//messageDialogModels = new[]
+				//{
+				//	new MessageDialogModel(identifier: "Rule #01", title: @"Don't re-invent the wheel", message: @"Too often, our better judgment and ethics play a major role in our job. Is there always a better way to do things? Most often, yes. Should we change it? Most often, no. In larger environments, there are many links to many resources that touch a poorly written piece of code. Without fully understanding the bigger picture, changing 1 variable could result in breaking the entire system. Equally, a stand-alone piece of code that is working in production, most of the time, should never be touched, unless, of course, it is producing undesired results or is performing poorly. Outside of that, let sleeping dogs lie. You'll be glad you did. One small piece of code can quickly turn into a full blown project before you know it. I suppose it's entirely at the mercy or your work load, but consider this before your ambitions take control."),
+				//	new MessageDialogModel(identifier: "Rule #02", title: @"Keep things as simple as possible but not simpler", message: @"It's very easy to sit down and start hammering out picturesque OOP, layering the onion with well justified abstraction interfaces, massive exception handling modules, explosive stored procedures, gigantic SSIS/DTS packages, intricate encryption algorithms, and patent worthy designs. Don't do it! Unless you're going to be the code monkey for the company until retirement, you're not only creating a difficult maintenance environment for your limited time there, but you're creating a nightmare environment for the next engineer. If you haven't experienced a mole hill that turns into a mountain, you will, and when that happens, you'll appreciate a simple design that gets the job done. Equally, don't be satisfied with a skeleton design that's vulnerable to security risks or falls victim to end-user misinterpretations. Decide on when enough is enough before you commit to the keyboard."),
+				//	new MessageDialogModel(identifier: "Rule #03", title: @"Learn from others mistakes, not your own", message: @"Forums are great place to begin but nothing competes with real world experience. The forums are a good learning environment, even for seasoned engineers, because simply studying the habits of other developers expands your mental dictionaries. Coincidentally, you also learn your own weaknesses while your noticing the mistakes of others. When you can honestly say, ""Hindsight 20/20 is for someone else, "" you've reached programming enlightenment."),
+				//	new MessageDialogModel(identifier: "Rule #04", title: @"Performance has no competition.", message: @"Not much explanation required here. There are many current arguments that preach TB hard disks and GB's of RAM as justifications that datatypes and performance-enhanced code are no longer a concern. Wrong. This is completely ignorant. Companies still have budgets and they generally don't include expanding a disk array, adding a processor or a stick of RAM. Quite the contrary, many server settings and applications are being designed to take full advantage of free resources. For example, by default, SQL Server will consume all hardware resources to complete a task. If I had a nickel for every junior DBA that looked at the cpu usage as some form of measurement and scratched their head on the overhead, well, I could afford a retail version of MS Office 2007. :) Code optimization is a specialty on its own. There's a reason there are entire books dedicated to it and it's not entirely due to an author's vanity."),
+				//	new MessageDialogModel(identifier: "Rule #05", title: @"Bug free code is more important than clean code.", message: @"This speaks for itself. Many new to the field want to write attractive and easy-to-follow code. There's nothing wrong with that and it is a good practice. However, it is not as important as code without bugs. Before you jump out of your seat, let me comment that both are desired and both can coexist. My point here is that learning to write bug-free  code is a discipline that exalts OOP or n-tier architectures and only time and experience will give you the ability to prevent issues such as implicit conversion errors and overflow exceptions. Now I'm not saying it's not an attainable skill at an early stage of development, I'm simply saying that it is often not the focus of the development life cycle but should be and will be the more you enhance your skills."),
+				//	new MessageDialogModel(identifier: "Rule #06", title: @"Begin with an end in mind", message: @"Bet you thought this was a no brainer didn't you? One of the funniest comics I've ever read...it was Dilbert or Far Side, had a manager and 2 programmers. The manager leans over the programmers shoulders and says, ""You 2 start coding and I'll go figure out what they want."" Very Funny. Haha. It happens all the time. Agile/Scrum, Waterfall, and Iterative are overlapping methodologies and are starting to blend colors. Yes projects can be never-ending but give the development stages proper documentation and an identity. This stage identity is a communication medium between you and management, and believe it or not, the ability to communicate and translate programming endeavors to business terms is becoming an increasingly desired skill almost more so than the programming itself. But that's another thread. To close this one, get management or the customer to sign-off on a finite design long before you employ the keyboard. This is your insurance policy and nice folks that don't do this are the ones who work late hours, holidays, and weekends."),
+				//	new MessageDialogModel(identifier: "Rule #07", title: @"If it's not broken, don't fix it.", message: @"Just don't do it. Even when you think you can improve upon existing code. Don't. If it works and fulfills the requirement and is in no way offensive (key point here), let it be. Resist the selfish desire to improve the last programmers code. He/she doesn't care and neither should you. You'll have plenty of time and opportunity to write your own code and guess what...the programmer following you will see pinholes in your code that they think need improvement...but the good programmers will let sleeping dogs lie."),
+				//	new MessageDialogModel(identifier: "Rule #08", title: @"First seek to understand, then to be understood.", message: @"No Dr. Phil didn't say this but he should. It holds true in all relationships both personally and professionally. Never assume that because you've developed an inventory management system at a previous job that your current employer wants or needs the same design. Although similar in content, the programming can be as different as night and day. Now don't get me wrong, your input is valuable and should be brought forward, but only after your are crystal clear on the requirements. The art of paraphrasing will make you many friends in the programming world because it shows management that you're not only listening intently but you also care about what you do outside of the keyboard. As hinted above, communication skills are slowly superseding programming skills and for good reasons. A brief why...because it's easier to take someone with good communications skills and teach them programming than it is to take a programmer and teach them communication skills. Let's leave it at that for now."),
+				//	new MessageDialogModel(identifier: "Rule #09", title: @"There's a place for everything and everything in its place.", message: @"This is a practice that has allowed me to be shortlisted and hired over even the most advanced developers and it's because you must understand and take advantage of the benefits of each environment. For example, SQL Server is designed and optimized to query and reduce records. .Net is not. So if the goal of your code block is to filter a recordset, use the best tool for the job for both performance and optimization reasons. Too many times I've seen SQL developers code procedural-based approaches in a stored procedure because they don't know how to write .net code and .net programmers writing set-based approaches in OOP when it should be in a stored procedure. Read the next sentence carefully. Don't be a victim of your own ignorance but equally, don't bother learning something you'll never use. Simply question and research the best environment for the task at hand and learn something new."),
+				//	new MessageDialogModel(identifier: "Rule #10", title: @"Scalability is next to godliness.", message: @"No sooner than you design and deploy an application that you were told and assumed was a throw-away application, it suddenly becomes valuable. It happens all the time. Yes, there are time constraints and other pressures that force us to discard good practices to meet deadlines, but never enough to ignore future developments. It takes only seconds to build a reusable class, compile it to a .dll, and add it to your library or better yet, implement a .dll from an old project because you thought ahead. So instead of copying/pasting or simply rewriting the same function over and over again, start building your own .dll libraries. This habit will allow you to later always ensure that your developments are scalable by giving you a quick and effortless foundation to build from."),
+				//};
 
 				var buttonConfigurations = new[]
 				{
@@ -314,7 +356,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 		
 		internal DialogTask ShowDialogThatNeedsClosePermission()
 		{
-			//! Both version (synchronous and asynchronous should work.
+			//! Both version (synchronous and asynchronous) should work.
 			Func<DialogResult> CloseCallback = () =>
 			{
 				var result = this.DialogManager.ShowWarning("Please confirm", "Do you really want to do this? I really won't ask again.", buttons: DialogButtons.Yes | DialogButtons.No).Result;
@@ -331,6 +373,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 				new ButtonConfiguration
 				(
 					caption: "Close",
+					buttonBehavior: DialogButtonBehavior.Cancel,
 					//callback: CloseCallback
 					callback: CloseCallbackAsync
 				)
@@ -350,6 +393,14 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 
 		#region Warnings
 
+		internal DialogTask ShowWarningDialog()
+		{
+			return this.DialogManager.ShowWarning
+			(
+				title: "Warning",
+				message: "Something, some when and somewhere is going to go wrong."
+			);
+		}
 
 		#endregion
 
@@ -495,7 +546,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.Showcase.ViewModels
 				buttonConfigurations[0].IsEnabled = true;
 				buttonConfigurations[1].IsEnabled = false;
 			});
-
+			
 			return this.DialogManager.ShowContent
 			(
 				viewModel: viewModel,

@@ -4,10 +4,9 @@
 
 
 using System.Collections.Generic;
-using Phoenix.UI.Wpf.DialogProvider.Resources.Globalization;
-using localG11n = Phoenix.UI.Wpf.DialogProvider.Resources.Globalization.g11n;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Resources.Globalization;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {
 	/// <summary>
 	/// Contains predefined <see cref="ButtonConfiguration"/>s for common use cases.
@@ -21,7 +20,8 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		(
 			caption: g11n.Ok,
 			dialogResult: DialogResult.Yes,
-			buttonBehavior: DialogButtonBehavior.Enter, callback: null
+			buttonBehavior: DialogButtonBehavior.Enter,
+			callback: null
 		);
 
 		/// <summary>
@@ -31,7 +31,8 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		(
 			caption: g11n.Cancel,
 			dialogResult: DialogResult.No,
-			buttonBehavior: DialogButtonBehavior.Cancel, callback: null
+			buttonBehavior: DialogButtonBehavior.Cancel,
+			callback: null
 		);
 
 		/// <summary>
@@ -41,7 +42,8 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		(
 			caption: g11n.Yes,
 			dialogResult: DialogResult.Yes,
-			buttonBehavior: DialogButtonBehavior.None, callback: null
+			buttonBehavior: DialogButtonBehavior.None,
+			callback: null
 		);
 
 		/// <summary>
@@ -51,10 +53,10 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		(
 			caption: g11n.No,
 			dialogResult: DialogResult.No,
-			buttonBehavior: DialogButtonBehavior.None, callback: null
+			buttonBehavior: DialogButtonBehavior.None,
+			callback: null
 		);
-
-
+		
 		/// <summary>
 		/// Represent a <c>Save</c> button.
 		/// </summary>
@@ -62,7 +64,8 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		(
 			caption: g11n.Save,
 			dialogResult: DialogResult.Yes,
-			buttonBehavior: DialogButtonBehavior.Enter, callback: null
+			buttonBehavior: DialogButtonBehavior.Enter,
+			callback: null
 		);
 
 		/// <summary>
@@ -72,7 +75,8 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		(
 			caption: g11n.Close,
 			dialogResult: DialogResult.No,
-			buttonBehavior: DialogButtonBehavior.Cancel, callback: null
+			buttonBehavior: DialogButtonBehavior.Cancel,
+			callback: null
 		);
 
 		/// <summary>

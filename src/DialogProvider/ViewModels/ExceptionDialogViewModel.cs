@@ -6,12 +6,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Phoenix.UI.Wpf.DialogProvider.Classes;
-using Phoenix.UI.Wpf.DialogProvider.Models;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models;
 
-namespace Phoenix.UI.Wpf.DialogProvider.ViewModels
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModels
 {
 	/// <summary>
 	/// View model for <see cref="Exception"/>s.
@@ -65,9 +63,7 @@ namespace Phoenix.UI.Wpf.DialogProvider.ViewModels
 		/// <param name="title"> The title of the dialog. </param>
 		/// <param name="message"> The message of the dialog. </param>
 		/// <param name="exceptions"> The <see cref="Exceptions"/> that should be visualized. </param>
-		/// <param name="dialogOptions"> Contains different options for the dialog. </param>
-		public ExceptionDialogViewModel(string title, string message, ICollection<Exception> exceptions, DialogOptions dialogOptions)
-			: base(dialogOptions)
+		public ExceptionDialogViewModel(string title, string message, ICollection<Exception> exceptions)
 		{
 			// Save parameters.
 			this.Title = title;

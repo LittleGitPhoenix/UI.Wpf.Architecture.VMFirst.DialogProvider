@@ -7,8 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Phoenix.UI.Wpf.Architecture.VMFirst.ViewProvider;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {
 	/// <summary>
 	/// Default <see cref="IDialogManager"/> using the current applications <see cref="Application.MainWindow"/> for showing dialogs.
@@ -77,19 +78,21 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 		{
 			DefaultDialogManager.Lock = new object();
 
+			if (Application.Current is null)
+			{
+				System.Diagnostics.Trace.WriteLine($"ERROR: The {nameof(DefaultDialogManager)} could not be initialized because {nameof(Application)}.{nameof(Application.Current)} is null. This can happen when running unit tests.");
+				return;
+			}
+
 			// Attach to the applications activated event, so that an reference to its main window can be obtained once it is available.
 			Application.Current.Activated += DefaultDialogManager.HandleApplicationActivated;
 			
 			// Try to get a reference to the applications main window regardless of the activation event (it could have been fired already).
 			DefaultDialogManager.MainWindow = DefaultDialogManager.GetMainWindow();
 		}
-
+		
 		/// <inheritdoc />
-		public DefaultDialogManager(DialogAssemblyViewProvider dialogAssemblyViewProvider)
-			: this(dialogAssemblyViewProvider, new IViewProvider[] { new AssemblyViewProvider(), new DefaultViewProvider() }) { }
-
-		/// <inheritdoc />
-		public DefaultDialogManager(DialogAssemblyViewProvider dialogAssemblyViewProvider, ICollection<IViewProvider> viewProviders)
+		public DefaultDialogManager(DialogAssemblyViewProvider dialogAssemblyViewProvider, params IViewProvider[] viewProviders)
 			: base(dialogAssemblyViewProvider, viewProviders)
 		{
 			lock (DefaultDialogManager.Lock)

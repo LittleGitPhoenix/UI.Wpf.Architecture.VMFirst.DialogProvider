@@ -4,9 +4,9 @@
 
 
 using System;
-using Phoenix.UI.Wpf.DialogProvider.Classes;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Models
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models
 {
 	/// <summary>
 	/// Model for a dialog button.

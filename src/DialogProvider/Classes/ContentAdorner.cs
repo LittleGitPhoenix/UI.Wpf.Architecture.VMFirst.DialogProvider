@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {
 	/// <summary>
 	/// A special <see cref="Adorner"/> that can display any <see cref="Visual"/>-<see cref="Content"/>.
@@ -48,6 +48,10 @@ namespace Phoenix.UI.Wpf.DialogProvider.Classes
 
 		#region (De)Constructors
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="adornedElement"> The <see cref="UIElement"/> that will be adorned. </param>
 		private ContentAdorner(UIElement adornedElement)
 			: base(adornedElement)
 		{

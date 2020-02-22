@@ -6,7 +6,7 @@
 using System;
 using System.Windows.Input;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Classes
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {
 	/// <summary>
 	/// <see cref="ICommand"/> implementation for fixed <see cref="Action"/>s.

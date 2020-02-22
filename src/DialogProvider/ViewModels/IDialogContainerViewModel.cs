@@ -6,9 +6,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
-using Phoenix.UI.Wpf.DialogProvider.Models;
+using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models;
 
-namespace Phoenix.UI.Wpf.DialogProvider.ViewModels
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModels
 {
 	/// <summary>
 	/// Interface for dialog container view models.

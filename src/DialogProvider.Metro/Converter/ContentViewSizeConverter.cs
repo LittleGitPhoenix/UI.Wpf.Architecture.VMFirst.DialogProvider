@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace Phoenix.UI.Wpf.DialogProvider.Metro.Converter
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro.Converter
 {
 	internal class ContentViewSizeConverter : System.Windows.Markup.MarkupExtension, IValueConverter
 	{
