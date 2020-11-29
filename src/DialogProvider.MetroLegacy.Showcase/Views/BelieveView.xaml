@@ -16,7 +16,7 @@
 			Text="Believe.jpg"
 			/>
 		<Image
-			Source="../⬙/Believe.jpg"
+			Source="../Ressources/Believe.jpg"
 			/>
 	</Grid>
 </UserControl>

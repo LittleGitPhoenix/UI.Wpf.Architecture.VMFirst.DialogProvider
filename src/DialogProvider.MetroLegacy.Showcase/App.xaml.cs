@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DialogProvider.Metro.Showcase
+namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

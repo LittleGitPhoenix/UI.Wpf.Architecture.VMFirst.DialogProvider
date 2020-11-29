@@ -20,13 +20,18 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 
-				<!-- Theme -->
-				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
-
-				<!-- Styles -->
-				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+				<!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
 				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.tabcontrol.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+
+				<!-- Accent and AppTheme setting -->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+				<!--<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />-->
+
+				<!-- Additional Controls -->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
 
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
@@ -38,6 +43,6 @@
 		Margin="10,0,0,0"
 		Command="{Binding Command}"
 		Content="{Binding Caption}"
-		Style="{DynamicResource MahApps.Styles.Button.Square.Accent}"
+		Style="{DynamicResource AccentedSquareButtonStyle}"
 		/>
 </UserControl>

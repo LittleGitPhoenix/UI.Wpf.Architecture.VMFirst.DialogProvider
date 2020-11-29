@@ -19,13 +19,18 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 
-				<!-- Theme -->
-				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
-
-				<!-- Styles -->
-				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+				<!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
 				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.tabcontrol.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+
+				<!-- Accent and AppTheme setting -->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+				<!--<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />-->
+
+				<!-- Additional Controls -->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
 
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
@@ -37,7 +42,6 @@
 		DockPanel.Dock="Top"
 		ItemsSource="{Binding MessageModels, Mode=OneTime}"
 		SelectedItem="{Binding SelectedMessageModel}"
-		Style="{DynamicResource MahApps.Styles.TabControl.AnimatedSingleRow}"
 		TabStripPlacement="Left"
 		>
 		<TabControl.Resources>
@@ -58,7 +62,7 @@
 									SnapsToDevicePixels="True"
 									/>
 								<Border
-									BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+									BorderBrush="{DynamicResource AccentColorBrush}"
 									BorderThickness="1,0,0,0"
 									>
 									<Grid
@@ -86,13 +90,14 @@
 
 				<Setter Property="Padding" Value="0,0,0,0" />
 				<Setter Property="Margin" Value="0,0,0,0" />
-				<Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+				<!--<Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />-->
+				<Setter Property="Foreground" Value="{DynamicResource WhiteBrush}" />
 
 				<Style.Triggers>
 					<!-- Style for selected items -->
 					<Trigger Property="IsSelected" Value="False">
 						<Setter Property="Background" Value="Transparent" />
-						<Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray5}" />
+						<Setter Property="Foreground" Value="{DynamicResource GrayBrush5}" />
 					</Trigger>
 
 					<!-- Hover style for not selected items. -->
@@ -101,8 +106,8 @@
 							<Condition Property="IsMouseOver" Value="True" />
 							<Condition Property="IsSelected" Value="False" />
 						</MultiTrigger.Conditions>
-						<Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray8}" />
-						<Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+						<Setter Property="Background" Value="{DynamicResource GrayBrush8}" />
+						<Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
 					</MultiTrigger>
 
 					<!-- Hide the header if only one item is available. -->
@@ -117,10 +122,9 @@
 			<Style BasedOn="{StaticResource ChevronTabItemStyle}" TargetType="TabItem">
 				<Setter Property="Header" Value="{Binding Identifier, Mode=OneTime}" />
 				<Setter Property="MaxWidth" Value="250" />
-				<Setter Property="FontSize" Value="26.67" />
-				<Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
+				<Setter Property="FontSize" Value="{DynamicResource TabItemFontSize}" />
+				<Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
 			</Style>
-				<!--<Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.TabItem}" />-->
 		</TabControl.ItemContainerStyle>
 
 		<TabControl.ContentTemplate>
@@ -137,8 +141,8 @@
 						Name="Title"
 						DockPanel.Dock="Top"
 						Margin="0,-10,0,0"
-						FontSize="{DynamicResource MahApps.Font.Size.Dialog.Title}"
-						Foreground="{DynamicResource MahApps.Brushes.Accent}"
+						FontSize="{DynamicResource DialogTitleFontSize}"
+						Foreground="{DynamicResource AccentColorBrush}"
 						Text="{Binding Title, Mode=OneTime}"
 						TextWrapping="Wrap"
 						Visibility="{Binding Title, Converter={converter:IsNullOrWhitespaceToVisibilityConverter}}"
@@ -168,7 +172,7 @@
 							<TextBlock
 								Name="MessageBlock"
 								DockPanel.Dock="Top"
-								FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}"
+								FontSize="{DynamicResource DialogMessageFontSize}"
 								Text="{Binding Message, Mode=OneTime}"
 								TextWrapping="Wrap"
 								Visibility="{Binding Message, Converter={converter:IsNullOrWhitespaceToVisibilityConverter}}"

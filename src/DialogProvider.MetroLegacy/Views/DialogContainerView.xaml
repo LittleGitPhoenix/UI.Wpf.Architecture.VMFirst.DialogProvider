@@ -25,16 +25,21 @@
 		<ResourceDictionary x:Name="DialogResourceDictionary">
 			<ResourceDictionary.MergedDictionaries>
 
-				<!-- Theme -->
-				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
-
-				<!-- Styles -->
-				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+				<!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
 				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.tabcontrol.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
 
-				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.tabcontrol.xaml" />
-				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.flatslider.xaml" />
+				<!-- Accent and AppTheme setting -->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+				<!--<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />-->
+
+				<!-- Additional Controls -->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+
+				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatSlider.xaml" />
 
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
@@ -44,22 +49,61 @@
 	<UserControl.Background>
 		<SolidColorBrush
 			Opacity="0.5"
-			Color="{DynamicResource MahApps.Colors.ThemeBackground}"
+			Color="{DynamicResource WhiteColor}"
 			/>
 	</UserControl.Background>
 
 	<Border
+		MaxHeight="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=ActualHeight, Converter={converter:ContentViewSizeConverter}, ConverterParameter=0.80, Mode=OneWay}"
 		Padding="0,10"
 		HorizontalAlignment="Stretch"
 		VerticalAlignment="Center"
-		Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-		BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+		Background="{DynamicResource WhiteBrush}"
+		BorderBrush="{DynamicResource AccentColorBrush}"
 		BorderThickness="0,1"
-		MaxHeight="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=ActualHeight, Converter={converter:ContentViewSizeConverter}, ConverterParameter=0.80, Mode=OneWay}"
 		>
 
 		<Grid>
 
+			<!--#region Transparency-->
+			<!--<Button
+				Name="TransparencyToggle"
+				Width="30"
+				Height="30"
+				Margin="0,-11,0,0"
+				Padding="5"
+				HorizontalAlignment="Right"
+				VerticalAlignment="Top"
+				Background="Transparent"
+				Click="ChangeTransparency"
+				>
+
+				<Button.Style>
+					<Style TargetType="Button">
+						<Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+						<Style.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</Button.Style>
+
+				<Button.Template>
+					<ControlTemplate>
+						<Border
+							Padding="{TemplateBinding Padding}"
+							Background="{TemplateBinding Background}"
+							>
+							<Path
+								Data="M17.66,8L12,2.35L6.34,8C4.78,9.56 4,11.64 4,13.64C4,15.64 4.78,17.75 6.34,19.31C7.9,20.87 9.95,21.66 12,21.66C14.05,21.66 16.1,20.87 17.66,19.31C19.22,17.75 20,15.64 20,13.64C20,11.64 19.22,9.56 17.66,8M6,14C6,12 6.62,10.73 7.76,9.6L12,5.27L16.24,9.65C17.38,10.77 18,12 18,14H6Z"
+								Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+								Stretch="Uniform"
+								/>
+						</Border>
+					</ControlTemplate>
+				</Button.Template>
+			</Button>-->
 			<Slider
 				Width="50"
 				Margin="0,-11,0,0"
@@ -68,16 +112,16 @@
 				Focusable="False"
 				Maximum="1.0"
 				Minimum="0.3"
-				Style="{DynamicResource MahApps.Styles.Slider.Flat}"
+				Style="{DynamicResource FlatSlider}"
 				Visibility="{Binding ShowTransparencyToggle, Converter={converter:BoolToVisibilityConverter}}"
 				Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Opacity}"
 				/>
 			<!--#endregion-->
 
 			<DockPanel
+				MaxWidth="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=ActualWidth, Converter={converter:ContentViewSizeConverter}, ConverterParameter=0.85, Mode=OneWay}"
 				HorizontalAlignment="Stretch"
 				VerticalAlignment="Stretch"
-				MaxWidth="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=ActualWidth, Converter={converter:ContentViewSizeConverter}, ConverterParameter=0.85, Mode=OneWay}"
 				>
 
 				<!--#region Buttons-->

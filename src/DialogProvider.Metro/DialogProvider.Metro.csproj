@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
 	<PropertyGroup>
-		<TargetFrameworks>net45</TargetFrameworks>
+		<TargetFrameworks>net5.0-windows;netcoreapp3.1</TargetFrameworks>
 		<UseWPF>true</UseWPF>
 		<AssemblyName>Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro</AssemblyName>
 		<RootNamespace>Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro</RootNamespace>
 		<Authors>Felix Leistner</Authors>
 		<Company>Little Phoenix</Company>
 		<Copyright>2020</Copyright>
-		<Version>2.0.0</Version>
+		<Version>2.1.0</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IncludeSymbols>true</IncludeSymbols>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -27,7 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MahApps.Metro" Version="1.6.5" />
+		<PackageReference Include="MahApps.Metro" Version="2.3.4" />
 	</ItemGroup>
 
 	<ItemGroup>

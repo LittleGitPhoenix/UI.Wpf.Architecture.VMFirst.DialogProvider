@@ -1,15 +1,20 @@
 # Phoenix.UI.Wpf.DialogProvider
 
-| .NET Framework | .NET Standard | .NET Core |
+| .NET Framework | .NET Core | .NET |
 | :-: | :-: | :-: |
-| :heavy_check_mark: 4.5 | :heavy_minus_sign: | :heavy_check_mark: 3.1 |
+| :heavy_check_mark: 4.5 | :heavy_check_mark: 3.1 | :heavy_check_mark: 5.0 |
 
 This project helps showing dialogs in **WPF** applications directly from the view model. Dialogs are displayed using adorners.
 ___
 
+# Table of Content
+
+[toc]
+___
+
 # General Information
 
-Showing dialogs to the user of an application is necessary in almost all projects. This ***DialogProvider*** aims at helping in this matter when using the **View Model First** approach for **WPF** applications. It simply lets you show dialogs only knowing about view models. Being aware about the views that are shown to the user is unnecessary, as an `IViewProvider` from the **Nuget** package [**Phoenix.UI.Wpf.Architecture.VMFirst.ViewProvider**](<https://github.com/LittleGitPhoenix/UI.Wpf.Architecture.VMFirst.ViewProvider>) is used to resolve the views that will be bound to the view models. More about what view providing is, can be found in the doumentation of that package.
+Showing dialogs to the user of an application is necessary in almost all projects. This ***DialogProvider*** aims at helping in this matter when using the **View Model First** approach for **WPF** applications. It simply lets you show dialogs only knowing about view models. Being aware about the views that are shown to the user is unnecessary, as an `IViewProvider` from the **Nuget** package [**Phoenix.UI.Wpf.Architecture.VMFirst.ViewProvider**](<https://github.com/LittleGitPhoenix/UI.Wpf.Architecture.VMFirst.ViewProvider>) is used to resolve the views that will be bound to the view models. More about what view providing is, can be found in the documentation of that package.
 ___
 
 # Concept
@@ -103,7 +108,7 @@ this.DialogManager.ShowMessage
 );
 ```
 
-When displaying **Message** dialogs it is possible instead of just showing one message at a time, to display multiple, preferably selectable messages at once within a single dialog. To achieve this, use the ***ShowMessage*** method that accepts a collection of `MessageDialogModel`s as one of its parameters.
+When displaying **Message** dialogs it is possible instead of just showing one message at a time, to display multiple, preferably selectable messages at once within a single dialog. To achieve this, use the `ShowMessage` method that accepts a collection of `MessageDialogModel`s as one of its parameters.
 
 ```csharp
 messageDialogModels = new[]
@@ -138,7 +143,7 @@ this.DialogManager.ShowException
 
 ## Custom Content Dialogs
 
-Sometimes it may be necessary to show more than those simple messages or exceptions. To address this requierement, the `DialogManager` supports showing any view model as so called custom content.
+Sometimes it may be necessary to show more than those simple messages or exceptions. To address this requirement, the `DialogManager` supports showing any view model as so called custom content.
 
 ```csharp
 this.DialogManager.ShowContent
@@ -255,7 +260,7 @@ public ButtonConfiguration(string caption, DialogResult dialogResult, DialogButt
 public ButtonConfiguration(string caption, DialogButtonBehavior buttonBehavior, Func<Task<DialogResult>> callback)
 ```
 
-:grey_exclamation: Note that if `[DialogResult](#DialogResult).None` is returned by any `ButtonConfiguration`, then the close callback of the `IDialogHandler` won't be called thus preventing the dialog from closing.
+:grey_exclamation: Note that if [`DialogResult.None`](#DialogResult) is returned by any `ButtonConfiguration`, then the close callback of the `IDialogHandler` won't be called thus preventing the dialog from closing.
 
 ### DialogButtonBehavior
 
@@ -299,7 +304,7 @@ return this.DialogManager.ShowMessage
 
 ## DefaultButtonConfigurations
 
-For the most common buttons predefined configurations are available. Those can be used directly. Alternetivly some overloads of the methods to show dialogs also accept an `DialogButtons` enumeration. 
+For the most common buttons predefined configurations are available. Those can be used directly. Alternatively some overloads of the methods to show dialogs also accept an `DialogButtons` enumeration. 
 
 | Button configuration | Enumeration value |
 | :- | :- |
@@ -343,13 +348,23 @@ The views used for displaying dialogs are provided in separate assemblies. This 
 
 ## Metro Styled Dialogs
 
-| .NET Framework | .NET Standard | .NET Core |
+> Due to breaking changes in **MahApps** separate packages are available for metro styled dialog views.
+
+**Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro** → **MahApps v2.x**
+
+| .NET Framework | .NET Core | .NET |
+| :-: | :-: | :-: |
+| :heavy_minus_sign: | :heavy_check_mark: 3.1 | :heavy_check_mark: 5.0 |
+
+**Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.MetroLegacy** → **MahApps v1.6.5**
+
+| .NET Framework | .NET Core | .NET |
 | :-: | :-: | :-: |
 | :heavy_check_mark: 4.5 | :heavy_minus_sign: | :heavy_minus_sign: |
 
 This **NuGet** package contains dialog views styled in accordance with **Microsoft's Metro** design language and is based on [MahApps Metro](<https://github.com/MahApps/MahApps.Metro>).
 
-Since all the views completely overlap their parent views, they provide an **TransparencyToggle** in the top right corner that can be used to make the dialog transparent so the underlying view can be seen. The toggle can be disabled via `[DialogOptions](#DialogOptions).HideTransparencyToggle`.
+Since all the views completely overlap their parent views, they provide a **TransparencyToggle** in the top right corner that can be used to make the dialog transparent so the underlying view can be seen. The toggle can be disabled via [`DialogOptions.HideTransparencyToggle`](#DialogOptions).
 
 **Message without title**
 

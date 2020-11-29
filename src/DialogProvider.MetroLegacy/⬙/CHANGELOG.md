@@ -5,19 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ___
 
-## 2.1.0 (2020-11-29)
+:exclamation: Development of this package has been discontinued.
+:exclamation: It is a renamed version of **Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro v2.0**
+:exclamation: It still uses **MahApps.Metro v1.6.5**
+:exclamation: Therefore it is compatible with **.Net Framework 4.5**.
 
-### Added
-
-- Now targeting **.NET 5.0** and **.NET Core 3.1**.
-
-### Updated
-
-- MahApps.Metro ~~1.6.5~~ → **2.3.4**
-
-### Removed
-
-- Support for .Net Framework is dropped. The old version of this package is now available as **Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.MetroLegacy** which still uses **MahApps.Metro v1.6.5**.
 ___
 
 ## 2.0.0 (2020-02-22)

@@ -20,14 +20,19 @@
 	<UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				
-				<!-- Theme -->
-				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
 
-				<!-- Styles -->
-				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+				<!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
 				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.tabcontrol.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+
+				<!-- Accent and AppTheme setting -->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml" />
+				<!--<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />-->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+
+				<!-- Additional Controls -->
+				<class:DesignTimeResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
 
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
@@ -45,8 +50,8 @@
 			Name="Title"
 			DockPanel.Dock="Top"
 			Margin="0,-10,0,0"
-			FontSize="{DynamicResource MahApps.Font.Size.Dialog.Title}"
-			Foreground="{DynamicResource MahApps.Brushes.Control.Validation}"
+			FontSize="{DynamicResource DialogTitleFontSize}"
+			Foreground="{DynamicResource ControlsValidationBrush}"
 			Text="{Binding Title, Mode=OneTime}"
 			TextWrapping="Wrap"
 			Visibility="{Binding Title, Mode=OneTime, Converter={converter:IsNullOrWhitespaceToVisibilityConverter}}"
@@ -68,8 +73,8 @@
 			<!--#region Dialog Message-->
 			<TextBlock
 				DockPanel.Dock="Top"
-				FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}"
-				Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+				FontSize="{DynamicResource DialogMessageFontSize}"
+				Foreground="{DynamicResource BlackColorBrush}"
 				Text="{Binding Message, Mode=OneTime}"
 				TextWrapping="Wrap"
 				Visibility="{Binding Message, Mode=OneTime, Converter={converter:IsNullOrWhitespaceToVisibilityConverter}}"
@@ -80,9 +85,7 @@
 			<TabControl
 				ItemsSource="{Binding Exceptions, Mode=OneTime}"
 				SelectedItem="{Binding SelectedExceptionModel}"
-				Style="{DynamicResource MahApps.Styles.TabControl.AnimatedSingleRow}"
 				TabStripPlacement="Top"
-				ClipToBounds="True"
 				>
 
 				<TabControl.ItemTemplate>
@@ -107,7 +110,6 @@
 						<TabControl
 							ItemsSource="{Binding Mode=OneTime}"
 							SelectedItem="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.SelectedInnerExceptionModel}"
-							Style="{DynamicResource MahApps.Styles.TabControl.AnimatedSingleRow}"
 							>
 							<TabControl.Resources>
 								<Style x:Key="ChevronTabItemStyle" TargetType="TabItem">
@@ -118,7 +120,7 @@
 												>
 												<DockPanel
 													MaxWidth="{TemplateBinding MaxWidth}"
-													Margin="-18,0,0,0"
+													Margin="-15,0,0,0"
 													LastChildFill="True"
 													>
 													<Path
@@ -144,7 +146,7 @@
 															Margin="10,0"
 															HorizontalAlignment="Left"
 															VerticalAlignment="Center"
-															FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}"
+															FontSize="{DynamicResource DialogMessageFontSize}"
 															Text="{TemplateBinding Header}"
 															/>
 													</Grid>
@@ -156,13 +158,13 @@
 									<Setter Property="Padding" Value="0,0,0,0" />
 									<Setter Property="Margin" Value="0,0,0,0" />
 									<Setter Property="Background" Value="Transparent" />
-									<Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray7}" />
+									<Setter Property="Foreground" Value="{DynamicResource GrayBrush7}" />
 
 									<Style.Triggers>
 										<!-- Style for selected items -->
 										<Trigger Property="IsSelected" Value="True">
-											<Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
-											<Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+											<Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
+											<Setter Property="Foreground" Value="{DynamicResource WhiteBrush}" />
 										</Trigger>
 
 										<!-- Hover style for not selected items. -->
@@ -171,8 +173,8 @@
 												<Condition Property="IsMouseOver" Value="True" />
 												<Condition Property="IsSelected" Value="False" />
 											</MultiTrigger.Conditions>
-											<Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray7}" />
-											<Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+											<Setter Property="Background" Value="{DynamicResource GrayBrush7}" />
+											<Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
 										</MultiTrigger>
 
 										<!-- Hide the header if only one item is available. -->
@@ -207,7 +209,7 @@
 											DockPanel.Dock="Top"
 											Background="Transparent"
 											BorderThickness="0"
-											FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}"
+											FontSize="{DynamicResource DialogMessageFontSize}"
 											IsReadOnly="True"
 											Text="{Binding ExceptionMessage, Mode=OneTime}"
 											TextWrapping="Wrap"
@@ -249,7 +251,7 @@
 																	Margin="20,2,5,2"
 																	Background="Transparent"
 																	BorderThickness="0"
-																	Foreground="{DynamicResource MahApps.Brushes.MenuItem.Foreground.Disabled}"
+																	Foreground="{DynamicResource DisabledMenuItemForeground}"
 																	IsReadOnly="True"
 																	Text="➤"
 																	/>
@@ -257,7 +259,7 @@
 																	Margin="0,2,10,2"
 																	Background="Transparent"
 																	BorderThickness="0"
-																	Foreground="{DynamicResource MahApps.Brushes.MenuItem.Foreground.Disabled}"
+																	Foreground="{DynamicResource DisabledMenuItemForeground}"
 																	IsReadOnly="True"
 																	Text="{Binding Mode=OneTime}"
 																	TextWrapping="Wrap"
