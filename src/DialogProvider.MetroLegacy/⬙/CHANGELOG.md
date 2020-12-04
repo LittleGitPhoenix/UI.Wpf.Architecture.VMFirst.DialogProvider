@@ -9,7 +9,13 @@ ___
 :exclamation: It is a renamed version of **Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro v2.0**
 :exclamation: It still uses **MahApps.Metro v1.6.5**
 :exclamation: Therefore it is compatible with **.Net Framework 4.5**.
+___
 
+## 3.0.0 (2020-12-04)
+
+### Changed
+
+- Changed license to [**LGPL-3.0**](https://www.gnu.org/licenses/lgpl-3.0.html).
 ___
 
 ## 2.0.0 (2020-02-22)

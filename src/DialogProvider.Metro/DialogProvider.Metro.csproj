@@ -2,13 +2,14 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net5.0-windows;netcoreapp3.1</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
 		<UseWPF>true</UseWPF>
 		<AssemblyName>Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro</AssemblyName>
 		<RootNamespace>Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Metro</RootNamespace>
 		<Authors>Felix Leistner</Authors>
 		<Company>Little Phoenix</Company>
 		<Copyright>2020</Copyright>
-		<Version>2.1.0</Version>
+		<Version>3.0.0</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IncludeSymbols>true</IncludeSymbols>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -24,10 +25,12 @@
 		<None Include="..\..\nuget.png" Pack="true" PackagePath="" Link="⬙\nuget.png" />
 		<None Include="..\..\README.md" Pack="true" PackagePath="" Link="⬙\README.md" />
 		<None Include="..\..\LICENSE.md" Pack="true" PackagePath="" Link="⬙\LICENSE.md" />
+		<None Include="..\..\COPYING" Pack="true" PackagePath="" Link="⬙\COPYING" />
+		<None Include="..\..\COPYING.LESSER" Pack="true" PackagePath="" Link="⬙\COPYING.LESSER" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MahApps.Metro" Version="2.3.4" />
+		<PackageReference Include="MahApps.Metro" Version="2.4.1" />
 	</ItemGroup>
 
 	<ItemGroup>
