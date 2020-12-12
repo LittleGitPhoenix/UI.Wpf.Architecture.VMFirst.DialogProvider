@@ -9,7 +9,7 @@
 		<Authors>Felix Leistner</Authors>
 		<Company>Little Phoenix</Company>
 		<Copyright>2020</Copyright>
-		<Version>3.0.0</Version>
+		<Version>3.1.0</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IncludeSymbols>true</IncludeSymbols>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -30,7 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Phoenix.UI.Wpf.Architecture.VMFirst.ViewProvider" Version="1.1.0" />
+		<PackageReference Include="Phoenix.UI.Wpf.Architecture.VMFirst.ViewProvider" Version="2.1.0" />
 		<PackageReference Include="PropertyChanged.Fody" Version="3.2.5" />
 	</ItemGroup>
 

@@ -5,14 +5,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models;
 using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModelInterfaces;
-using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModels;
 
 namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 {

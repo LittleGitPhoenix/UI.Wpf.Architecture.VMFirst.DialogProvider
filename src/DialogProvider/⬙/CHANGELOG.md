@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ___
 
+## 3.1.0 (2020-12-12)
+
+### Changed
+
+- View models implementing `IDialogManagerViewModel`are now automatically set up when their bound view is loaded. This is done via the new `IViewManager.ViewLoaded` event. That is why `DialogManagerViewModelHelper.CreateViewModelSetupCallback` has been deprecated.
+
+### Updated
+
+- Phoenix.UI.Wpf.Architecture.VMFirst.ViewProvider ~~1.1.0~~ → **2.1.0**
+
+### Deprecated
+
+- `DialogManagerViewModelHelper.CreateViewModelSetupCallback` has been deprecated as it is no longer needed.
+___
+
 ## 3.0.0 (2020-12-04)
 
 ### Changed

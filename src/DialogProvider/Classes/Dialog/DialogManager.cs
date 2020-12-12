@@ -32,7 +32,7 @@ namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 
 		private readonly DialogAssemblyViewProvider _dialogAssemblyViewProvider;
 
-		private readonly WrappingViewProvider _viewProvider;
+		private readonly WrappingViewProvider _wrappingViewProvider;
 
 		private readonly DialogHandlers _dialogHandlers;
 
@@ -53,24 +53,36 @@ namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 		/// <param name="dialogAssemblyViewProvider"> An instance of a <see cref="DialogAssemblyViewProvider"/> used to resolve views for the direct dialog view models. </param>
 		/// <param name="viewProviders"> Optional <see cref="IViewProvider"/>s used to resolve views for content view models. Default is only a <see cref="DefaultViewProvider"/>. </param>
 		public DialogManager(DialogAssemblyViewProvider dialogAssemblyViewProvider, params IViewProvider[] viewProviders)
+			: this(dialogAssemblyViewProvider, new WrappingViewProvider(viewProviders), true) { }
+
+		/// <summary>
+		/// Constructor for creating a new instance based on another one. It is called by <see cref="DialogManagerViewModelHelper.SetupViewModel"/> and prevents attaching event handlers to the internal <see cref="_wrappingViewProvider"/> again. />
+		/// </summary>
+		/// <param name="other"> The other <see cref="DialogManager"/> instance. </param>
+		internal DialogManager(DialogManager other)
+			: this(other._dialogAssemblyViewProvider, other._wrappingViewProvider, false) { }
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="dialogAssemblyViewProvider"> An instance of a <see cref="DialogAssemblyViewProvider"/> used to resolve views for the direct dialog view models. </param>
+		/// <param name="wrappingViewProvider"> The <see cref="WrappingViewProvider"/>s used to resolve views for content view models. </param>
+		/// <param name="attachToViewProviderEvent"> Flag if an event handler should be attached to the <see cref="WrappingViewProvider.ViewLoaded"/>event of <paramref name="wrappingViewProvider"/>. </param>
+		private DialogManager(DialogAssemblyViewProvider dialogAssemblyViewProvider, WrappingViewProvider wrappingViewProvider, bool attachToViewProviderEvent)
 		{
 			// Save parameters.
 			_dialogAssemblyViewProvider = dialogAssemblyViewProvider ?? throw new ArgumentNullException(nameof(dialogAssemblyViewProvider));
 
 			// Initialize fields.
 			_isInitialized = 0;
-
-			// Create a default view provider if no others are specified.
-			if (!viewProviders?.Any() ?? true)
-			{
-				var setupCallback = DialogManagerViewModelHelper.CreateViewModelSetupCallback(dialogAssemblyViewProvider);
-				var defaultViewProvider = new DefaultViewProvider(setupCallback);
-				viewProviders = new IViewProvider[] {defaultViewProvider};
-			}
-
-			// Save the view providers into a wrapper instance.
-			_viewProvider = new WrappingViewProvider(viewProviders);
 			
+			// If the wrapper does not contain any elements, that create one containing a default view provider.
+			if (!wrappingViewProvider.Any()) wrappingViewProvider = new WrappingViewProvider(new IViewProvider[] {new DefaultViewProvider()});
+			_wrappingViewProvider = wrappingViewProvider;
+			
+			// Attach to the view providers view loaded event.
+			if (attachToViewProviderEvent) _wrappingViewProvider.ViewLoaded += this.NewViewLoaded;
+
 			// Build all necessary dialog handlers.
 			var dialogHandlers = DialogManager.GetDialogHandlers(_dialogAssemblyViewProvider);
 			_dialogHandlers = new DialogHandlers(dialogHandlers);
@@ -88,7 +100,7 @@ namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 			// Allow initialization only once.
 			if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 1) return this;
 			
-			// Initialize all dialog handlers. Changes to the element will be made only by the handler, because the handler will wait for the element to be loaded and therefore it has more chances to find related element if needed (e.g. The element will most certainly not have a Window if it is not yet loaded).
+			// Initialize all dialog handlers. Changes to the element will be made only by the handler, because the handler will wait for the element to be loaded and therefore it has more chances to find the related element if needed (e.g. The element will most certainly not have a Window if it is not yet loaded).
 			_dialogHandlers.ForEach(handler => handler.Initialize(view));
 			return this;
 		}
@@ -117,6 +129,18 @@ namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 		private static DialogHandler CreateDialogHandler(DialogDisplayLocation displayLocation, DialogAssemblyViewProvider dialogAssemblyViewProvider)
 		{
 			return new DialogHandler(displayLocation, dialogAssemblyViewProvider);
+		}
+
+		#endregion
+
+		#region View Loading
+
+		/// <summary>
+		/// This is called by <see cref="_wrappingViewProvider"/> every time a new view has been loaded.
+		/// </summary>
+		internal virtual void NewViewLoaded(object sender, ViewLoadedEventArgs args)
+		{
+			DialogManagerViewModelHelper.SetupViewModel(this, args.ViewModel, args.View);
 		}
 
 		#endregion
@@ -186,7 +210,7 @@ namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 			// Try to resolve the content views of all message models if necessary.
 			foreach (var messageDialogModel in viewModel.MessageModels.Where(model => model.ContentViewModel != null))
 			{
-				messageDialogModel.ContentView = _viewProvider.GetViewInstance(messageDialogModel.ContentViewModel);
+				messageDialogModel.ContentView = _wrappingViewProvider.GetViewInstance(messageDialogModel.ContentViewModel);
 			}
 
 			return this.Show(viewModel, _dialogAssemblyViewProvider, buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
@@ -319,7 +343,7 @@ namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 			CancellationToken cancellationToken = default
 		)
 		{
-			return this.Show(viewModel, _viewProvider, buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
+			return this.Show(viewModel, _wrappingViewProvider, buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
 		}
 
 		#endregion

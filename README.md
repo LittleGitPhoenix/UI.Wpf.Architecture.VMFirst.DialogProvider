@@ -34,7 +34,7 @@ Externally only instances of `IDialogManager` must be used to show dialogs withi
 
 The `DialogManager` always needs to be initialized with a view, which will be adorned and used to display dialogs. Therefore the view model using the `DialogManager` needs to be at least a little bit aware of the view it is bound to.
 
-One possible initialization tactic would be to bind the views **Loaded** event to the view model and there initialize the `DialogManager`.
+One possible initialization strategy would be to bind the views **Loaded** event to the view model and there initialize the `DialogManager`.
 
 - XAML code for the view that binds the **Loaded** event to its own code behind
 
@@ -67,12 +67,10 @@ internal void OnViewLoaded(FrameworkElement view)
 }
 ```
 
-Alternatively when using the `DefaultViewProvider` from the separate **NuGet** package ***Phoenix.UI.Wpf.ViewProvider*** this view provider can be configured with a _setup callback_ so that a view model needs to only implement the `IDialogProviderViewModel` interface and this initialization will be done automatically.
+Alternatively when using the `DefaultViewProvider` from the separate **NuGet** package ***Phoenix.UI.Wpf.ViewProvider*** this view provider  will automatically create a `DialogManager`that can be used by the view model. To make use of this simply:
 
-```csharp
-var setupCallback = DialogManagerViewModelHelper.CreateViewModelSetupCallback(dialogAssemblyViewProvider);
-var defaultViewProvider = new DefaultViewProvider(setupCallback);
-```
+- let the view model implement `IDialogManagerViewModel`. This is the recommended way.
+- provide a property of type `IDialogManager` named `DialogManager`. This uses reflection and is therefore not recommended.
 
 ## DefaultDialogManager
 

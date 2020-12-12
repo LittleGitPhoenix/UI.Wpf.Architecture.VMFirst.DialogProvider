@@ -1,9 +1,13 @@
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
+using AutoFixture;
+using AutoFixture.AutoMoq;
 using Moq;
 using NUnit.Framework;
 using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes;
 using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModelInterfaces;
+using Phoenix.UI.Wpf.Architecture.VMFirst.ViewProvider;
 
 namespace DialogProvider.Test
 {
@@ -37,37 +41,44 @@ namespace DialogProvider.Test
 		{
 			public IDialogManager DialogManager { get; set; }
 		}
-		
+
 		#endregion
 
 		[Test]
 		[Apartment(ApartmentState.STA)]
 		public void DialogManagerViewModelHelper_Direct_Property_Injection_Succeeds()
 		{
+			// Arrange
 			var view = new Window();
 			var viewModel = new DialogManagerViewModelWithSetableProperty();
-			var dialogAssemblyViewProvider = new Mock<DialogAssemblyViewProvider>().Object;
+			var dialogAssemblyViewProvider = Mock.Of<DialogAssemblyViewProvider>();
+			var viewProvider = Mock.Of<IViewProvider>();
+			_ = new DialogManager(dialogAssemblyViewProvider, viewProvider);
 
-			var setupCallback = DialogManagerViewModelHelper.CreateViewModelSetupCallback(dialogAssemblyViewProvider);
-			setupCallback.Invoke(viewModel, view);
+			// Act
+			Mock.Get(viewProvider).Raise(provider => provider.ViewLoaded += null, new ViewLoadedEventArgs(viewModel, view));
 
-			Assert.That(viewModel.DialogManager, Is.Not.Null);
+			// Assert
+			Assert.NotNull(viewModel.DialogManager);
 			Assert.That(viewModel.DialogManager.IsInitialized, Is.False);
 			view.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
 			Assert.That(viewModel.DialogManager.IsInitialized, Is.True);
 		}
-		
+
 		[Test]
 		public void DialogManagerViewModelHelper_Direct_Property_Injection_Without_View_Does_Nothing()
 		{
 			var view = (FrameworkElement) null;
 			var viewModel = new DialogManagerViewModelWithSetableProperty();
-			var dialogAssemblyViewProvider = new Mock<DialogAssemblyViewProvider>().Object;
+			var dialogAssemblyViewProvider = Mock.Of<DialogAssemblyViewProvider>();
+			var viewProvider = Mock.Of<IViewProvider>();
+			_ = new DialogManager(dialogAssemblyViewProvider, viewProvider);
 
-			var setupCallback = DialogManagerViewModelHelper.CreateViewModelSetupCallback(dialogAssemblyViewProvider);
-			setupCallback.Invoke(viewModel, view);
+			// Act
+			Mock.Get(viewProvider).Raise(provider => provider.ViewLoaded += null, new ViewLoadedEventArgs(viewModel, view));
 
-			Assert.That(viewModel.DialogManager, Is.Null);
+			// Assert
+			Assert.Null(viewModel.DialogManager);
 		}
 
 		[Test]
@@ -76,12 +87,15 @@ namespace DialogProvider.Test
 		{
 			var view = new Window();
 			var viewModel = new DialogManagerViewModelWithAutoProperty();
-			var dialogAssemblyViewProvider = new Mock<DialogAssemblyViewProvider>().Object;
+			var dialogAssemblyViewProvider = Mock.Of<DialogAssemblyViewProvider>();
+			var viewProvider = Mock.Of<IViewProvider>();
+			_ = new DialogManager(dialogAssemblyViewProvider, viewProvider);
 
-			var setupCallback = DialogManagerViewModelHelper.CreateViewModelSetupCallback(dialogAssemblyViewProvider);
-			setupCallback.Invoke(viewModel, view);
+			// Act
+			Mock.Get(viewProvider).Raise(provider => provider.ViewLoaded += null, new ViewLoadedEventArgs(viewModel, view));
 
-			Assert.That(viewModel.DialogManager, Is.Not.Null);
+			// Assert
+			Assert.NotNull(viewModel.DialogManager);
 			Assert.That(viewModel.DialogManager.IsInitialized, Is.False);
 			view.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
 			Assert.That(viewModel.DialogManager.IsInitialized, Is.True);
@@ -93,14 +107,16 @@ namespace DialogProvider.Test
 		{
 			var view = new Window();
 			var viewModel = new DialogManagerViewModelWithExplicitProperty();
-			var dialogAssemblyViewProvider = new Mock<DialogAssemblyViewProvider>().Object;
+			var dialogAssemblyViewProvider = Mock.Of<DialogAssemblyViewProvider>();
+			var viewProvider = Mock.Of<IViewProvider>();
+			_ = new DialogManager(dialogAssemblyViewProvider, viewProvider);
 
-			var setupCallback = DialogManagerViewModelHelper.CreateViewModelSetupCallback(dialogAssemblyViewProvider);
-			setupCallback.Invoke(viewModel, view);
+			// Act
+			Mock.Get(viewProvider).Raise(provider => provider.ViewLoaded += null, new ViewLoadedEventArgs(viewModel, view));
 
 			// Check that the direct 'DialogManager' property is still null.
-			Assert.That(viewModel.DialogManager, Is.Null);
-
+			Assert.Null(viewModel.DialogManager);
+			
 			// Check if the explicit implemented 'DialogManager' property has been filled.
 			var concreteViewModel = (IDialogManagerViewModel) viewModel;
 			Assert.That(concreteViewModel.DialogManager, Is.Not.Null);
@@ -112,15 +128,17 @@ namespace DialogProvider.Test
 		{
 			var view = new Window();
 			var viewModel = new DialogManagerViewModelWithSetableProperty();
-			var dialogAssemblyViewProvider = new Mock<DialogAssemblyViewProvider>().Object;
-			var dialogManager = new DefaultDialogManager(dialogAssemblyViewProvider);
+			var dialogAssemblyViewProvider = Mock.Of<DialogAssemblyViewProvider>();
+			var viewProvider = Mock.Of<IViewProvider>();
+			var dialogManager = new DialogManager(dialogAssemblyViewProvider, viewProvider);
+			viewModel.DialogManager = dialogManager; //! Pre-Initialize the property.
 
-			viewModel.DialogManager = dialogManager;
-			var setupCallback = DialogManagerViewModelHelper.CreateViewModelSetupCallback(dialogAssemblyViewProvider);
-			setupCallback.Invoke(viewModel, view);
-			
-			// The DialogManager property must still be the same instance, since the helper should only initialize it.
-			Assert.That(viewModel.DialogManager, Is.EqualTo(dialogManager));
+			// Act
+			Mock.Get(viewProvider).Raise(provider => provider.ViewLoaded += null, new ViewLoadedEventArgs(viewModel, view));
+
+			// Assert
+			Assert.NotNull(viewModel.DialogManager);
+			Assert.That(viewModel.DialogManager, Is.EqualTo(dialogManager)); // The DialogManager property must still be the same instance, since the helper should only initialize it.
 			Assert.That(viewModel.DialogManager.IsInitialized, Is.False);
 			view.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent)); // Make this view already loaded.
 			Assert.That(viewModel.DialogManager.IsInitialized, Is.True);
@@ -128,16 +146,19 @@ namespace DialogProvider.Test
 
 		[Test]
 		[Apartment(ApartmentState.STA)]
-		public void DialogManagerViewModelHelper_Only_Uses_Property_From_Interface()
+		public void DialogManagerViewModelHelper_Only_Has_Property()
 		{
 			var view = new Window();
 			var viewModel = new DialogManagerViewModelWithoutInterface();
-			var dialogAssemblyViewProvider = new Mock<DialogAssemblyViewProvider>().Object;
+			var dialogAssemblyViewProvider = Mock.Of<DialogAssemblyViewProvider>();
+			var viewProvider = Mock.Of<IViewProvider>();
+			_ = new DialogManager(dialogAssemblyViewProvider, viewProvider);
 
-			var setupCallback = DialogManagerViewModelHelper.CreateViewModelSetupCallback(dialogAssemblyViewProvider);
-			setupCallback.Invoke(viewModel, view);
+			// Act
+			Mock.Get(viewProvider).Raise(provider => provider.ViewLoaded += null, new ViewLoadedEventArgs(viewModel, view));
 
-			Assert.That(viewModel.DialogManager, Is.Null);
+			// Assert
+			Assert.Null(viewModel.DialogManager);
 		}
 
 		[Test]
@@ -146,11 +167,14 @@ namespace DialogProvider.Test
 		{
 			var view = new Window();
 			var viewModel = new Mock<IDialogManagerViewModel>().Object; //! Mocked object does not have a setter or a backing field and this is why the test fails.
-			var dialogAssemblyViewProvider = new Mock<DialogAssemblyViewProvider>().Object;
+			var dialogAssemblyViewProvider = Mock.Of<DialogAssemblyViewProvider>();
+			var viewProvider = Mock.Of<IViewProvider>();
+			_ = new DialogManager(dialogAssemblyViewProvider, viewProvider);
 
-			var setupCallback = DialogManagerViewModelHelper.CreateViewModelSetupCallback(dialogAssemblyViewProvider);
-			setupCallback.Invoke(viewModel, view);
+			// Act
+			Mock.Get(viewProvider).Raise(provider => provider.ViewLoaded += null, new ViewLoadedEventArgs(viewModel, view));
 
+			// Assert
 			Assert.That(viewModel.DialogManager, Is.Null);
 		}
 	}
