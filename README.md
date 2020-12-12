@@ -76,7 +76,7 @@ var defaultViewProvider = new DefaultViewProvider(setupCallback);
 
 ## DefaultDialogManager
 
-This special dialog manager does not need to be initialized with a view, as it automatically uses the current applications **MainWindow** to show dialogs.
+This special dialog manager does not need to be initialized with a view, as it automatically uses the current applications **MainWindow** to show dialogs. The reference to the **MainWindow** is obtained via the `Activated` event of the application. Therefore the `DefaultDialogManager`may not be initialized in the constructor of the first view model, as the `Activated`event hasn't been raised by then. 
 ___
 
 # Dialog Types

@@ -117,10 +117,9 @@
 			<Style BasedOn="{StaticResource ChevronTabItemStyle}" TargetType="TabItem">
 				<Setter Property="Header" Value="{Binding Identifier, Mode=OneTime}" />
 				<Setter Property="MaxWidth" Value="250" />
-				<Setter Property="FontSize" Value="26.67" />
+				<Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.TabItem}" />
 				<Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
 			</Style>
-				<!--<Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.TabItem}" />-->
 		</TabControl.ItemContainerStyle>
 
 		<TabControl.ContentTemplate>
