@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows;
-using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Models;
 using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModelInterfaces;
 using Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.ViewModels;
 using Phoenix.UI.Wpf.Architecture.VMFirst.ViewProvider;
@@ -145,59 +144,10 @@ namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 
 		#endregion
 
-		#region Messages
-
-		/// <inheritdoc />
-		public DialogTask ShowMessage
-		(
-			string title = null,
-			string message = null,
-			object contentViewModel = null,
-			DialogButtons buttons = DialogButtons.Ok,
-			DialogDisplayLocation displayLocation = DialogDisplayLocation.Window,
-			DialogDisplayBehavior displayBehavior = DialogDisplayBehavior.Show,
-			DialogOptions dialogOptions = DialogOptions.None,
-			CancellationToken cancellationToken = default
-		)
-			=> this.ShowMessage(new MessageDialogModel(identifier: null, title: title, message: message, contentViewModel: contentViewModel), buttons, displayLocation, displayBehavior, dialogOptions, cancellationToken);
-
-		/// <inheritdoc />
-		public DialogTask ShowMessage
-		(
-			MessageDialogModel messageModel,
-			DialogButtons buttons = DialogButtons.Ok,
-			DialogDisplayLocation displayLocation = DialogDisplayLocation.Window,
-			DialogDisplayBehavior displayBehavior = DialogDisplayBehavior.Show,
-			DialogOptions dialogOptions = DialogOptions.None,
-			CancellationToken cancellationToken = default
-		)
-			=> this.ShowMessage(new[] {messageModel}, buttons, displayLocation, displayBehavior, dialogOptions, cancellationToken);
-
-		/// <inheritdoc />
-		public DialogTask ShowMessage
-		(
-			ICollection<MessageDialogModel> messageModels,
-			DialogButtons buttons = DialogButtons.Ok,
-			DialogDisplayLocation displayLocation = DialogDisplayLocation.Window,
-			DialogDisplayBehavior displayBehavior = DialogDisplayBehavior.Show,
-			DialogOptions dialogOptions = DialogOptions.None,
-			CancellationToken cancellationToken = default
-		)
-			=> this.ShowMessage(messageModels, DefaultButtonConfigurations.GetConfiguration(buttons), displayLocation, displayBehavior, dialogOptions, cancellationToken);
-
-		/// <inheritdoc />
-		public DialogTask ShowMessage
-		(
-			ICollection<MessageDialogModel> messageModels,
-			IEnumerable<ButtonConfiguration> buttonConfigurations,
-			DialogDisplayLocation displayLocation = DialogDisplayLocation.Window,
-			DialogDisplayBehavior displayBehavior = DialogDisplayBehavior.Show,
-			DialogOptions dialogOptions = DialogOptions.None,
-			CancellationToken cancellationToken = default
-		)
-			=> this.ShowMessage(new MessageDialogViewModel(messageModels), buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
+		#region Show
 		
-		private DialogTask ShowMessage
+		/// <inheritdoc />
+		public DialogTask ShowMessage
 		(
 			MessageDialogViewModel viewModel,
 			IEnumerable<ButtonConfiguration> buttonConfigurations,
@@ -216,89 +166,6 @@ namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 			return this.Show(viewModel, _dialogAssemblyViewProvider, buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
 		}
 
-		#endregion
-
-		#region Warnings
-
-		/// <inheritdoc />
-		public DialogTask ShowWarning
-		(
-			string title = null,
-			string message = null,
-			object contentViewModel = null,
-			DialogButtons buttons = DialogButtons.Ok,
-			DialogDisplayLocation displayLocation = DialogDisplayLocation.Window,
-			DialogDisplayBehavior displayBehavior = DialogDisplayBehavior.Show,
-			DialogOptions dialogOptions = DialogOptions.None,
-			CancellationToken cancellationToken = default
-		)
-			=> this.ShowWarning(new MessageDialogModel(identifier: null, title: title, message: message, contentViewModel: contentViewModel), buttons, displayLocation, displayBehavior, dialogOptions, cancellationToken);
-
-		/// <inheritdoc />
-		public DialogTask ShowWarning
-		(
-			MessageDialogModel messageModel,
-			DialogButtons buttons = DialogButtons.Ok,
-			DialogDisplayLocation displayLocation = DialogDisplayLocation.Window,
-			DialogDisplayBehavior displayBehavior = DialogDisplayBehavior.Show,
-			DialogOptions dialogOptions = DialogOptions.None,
-			CancellationToken cancellationToken = default
-		)
-			=> this.ShowWarning(new[] { messageModel }, buttons, displayLocation, displayBehavior, dialogOptions, cancellationToken);
-
-		/// <inheritdoc />
-		public DialogTask ShowWarning
-		(
-			ICollection<MessageDialogModel> messageModels,
-			DialogButtons buttons = DialogButtons.Ok,
-			DialogDisplayLocation displayLocation = DialogDisplayLocation.Window,
-			DialogDisplayBehavior displayBehavior = DialogDisplayBehavior.Show,
-			DialogOptions dialogOptions = DialogOptions.None,
-			CancellationToken cancellationToken = default
-		)
-			=> this.ShowWarning(messageModels, DefaultButtonConfigurations.GetConfiguration(buttons), displayLocation, displayBehavior, dialogOptions, cancellationToken);
-
-		/// <inheritdoc />
-		public DialogTask ShowWarning
-		(
-			ICollection<MessageDialogModel> messageModels,
-			IEnumerable<ButtonConfiguration> buttonConfigurations,
-			DialogDisplayLocation displayLocation = DialogDisplayLocation.Window,
-			DialogDisplayBehavior displayBehavior = DialogDisplayBehavior.Show,
-			DialogOptions dialogOptions = DialogOptions.None,
-			CancellationToken cancellationToken = default
-		)
-			=> this.ShowMessage(new WarningDialogViewModel(messageModels), buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
-
-		#endregion
-
-		#region Exceptions
-
-		/// <inheritdoc />
-		public DialogTask ShowException
-		(
-			string title = null,
-			string message = null,
-			DialogDisplayLocation displayLocation = DialogDisplayLocation.Window,
-			DialogDisplayBehavior displayBehavior = DialogDisplayBehavior.Show,
-			DialogOptions dialogOptions = DialogOptions.None,
-			CancellationToken cancellationToken = default
-		)
-			=> this.ShowExceptions(new Exception[0], title, message, displayLocation, displayBehavior, dialogOptions, cancellationToken);
-
-		/// <inheritdoc />
-		public DialogTask ShowException
-		(
-			Exception exception,
-			string title = null,
-			string message = null,
-			DialogDisplayLocation displayLocation = DialogDisplayLocation.Window,
-			DialogDisplayBehavior displayBehavior = DialogDisplayBehavior.Show,
-			DialogOptions dialogOptions = DialogOptions.None,
-			CancellationToken cancellationToken = default
-		)
-			=> this.ShowExceptions(exception is AggregateException aggregateException ? aggregateException.InnerExceptions.ToArray() : new[] {exception}, title, message, displayLocation, displayBehavior, dialogOptions, cancellationToken);
-
 		/// <inheritdoc />
 		public DialogTask ShowExceptions
 		(
@@ -315,23 +182,7 @@ namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 			var buttonConfigurations = new[] {DefaultButtonConfigurations.OkButtonConfiguration};
 			return this.Show(viewModel, _dialogAssemblyViewProvider, buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
 		}
-
-		#endregion
-
-		#region Content
-
-		/// <inheritdoc />
-		public DialogTask ShowContent
-		(
-			object viewModel,
-			DialogButtons buttons = DialogButtons.None,
-			DialogDisplayLocation displayLocation = DialogDisplayLocation.Window,
-			DialogDisplayBehavior displayBehavior = DialogDisplayBehavior.Show,
-			DialogOptions dialogOptions = DialogOptions.HideTransparencyToggle,
-			CancellationToken cancellationToken = default
-		)
-			=> this.ShowContent(viewModel, DefaultButtonConfigurations.GetConfiguration(buttons), displayLocation, displayBehavior, dialogOptions, cancellationToken);
-
+		
 		/// <inheritdoc />
 		public DialogTask ShowContent
 		(
@@ -344,6 +195,40 @@ namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 		)
 		{
 			return this.Show(viewModel, _wrappingViewProvider, buttonConfigurations, displayLocation, displayBehavior, dialogOptions, cancellationToken);
+		}
+
+		private DialogTask Show
+		(
+			object viewModel,
+			IViewProvider viewProvider,
+			IEnumerable<ButtonConfiguration> buttonConfigurations,
+			DialogDisplayLocation displayLocation,
+			DialogDisplayBehavior displayBehavior,
+			DialogOptions dialogOptions,
+			CancellationToken cancellationToken
+		)
+		{
+			if (cancellationToken.IsCancellationRequested) return DialogTask.Killed;
+
+			DialogTask dialogTask = null;
+
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+				var view = viewProvider.GetViewInstance(viewModel);
+
+				// Find the matching handler for the display location.
+				var dialogHandler = _dialogHandlers.GetDialogHandler(displayLocation);
+
+				// Tell it to show the content.
+				dialogTask = dialogHandler.ShowView(view, buttonConfigurations, displayBehavior, dialogOptions, cancellationToken);
+			});
+
+			if (dialogTask is null) return null;
+
+			if (cancellationToken.IsCancellationRequested) return DialogTask.Killed;
+
+			dialogTask.Start();
+			return dialogTask;
 		}
 
 		#endregion
@@ -399,45 +284,7 @@ namespace Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider.Classes
 		}
 
 		#endregion
-
-		#region Helper
-
-		private DialogTask Show
-		(
-			object viewModel,
-			IViewProvider viewProvider,
-			IEnumerable<ButtonConfiguration> buttonConfigurations,
-			DialogDisplayLocation displayLocation,
-			DialogDisplayBehavior displayBehavior,
-			DialogOptions dialogOptions,
-			CancellationToken cancellationToken
-		)
-		{
-			if (cancellationToken.IsCancellationRequested) return DialogTask.Killed;
-
-			DialogTask dialogTask = null;
-
-			Application.Current.Dispatcher.Invoke(() =>
-			{
-				var view = viewProvider.GetViewInstance(viewModel);
-
-				// Find the matching handler for the display location.
-				var dialogHandler = _dialogHandlers.GetDialogHandler(displayLocation);
-
-				// Tell it to show the content.
-				dialogTask = dialogHandler.ShowView(view, buttonConfigurations, displayBehavior, dialogOptions, cancellationToken);
-			});
-
-			if (dialogTask is null) return null;
-
-			if (cancellationToken.IsCancellationRequested) return DialogTask.Killed;
-
-			dialogTask.Start();
-			return dialogTask;
-		}
-
-		#endregion
-
+		
 		/// <summary> Returns a string representation of the object. </summary>
 		public override string ToString() => $"[<{this.GetType().Name}> :: Initialized: {this.IsInitialized} | DialogHandlers: {_dialogHandlers.Count}]";
 

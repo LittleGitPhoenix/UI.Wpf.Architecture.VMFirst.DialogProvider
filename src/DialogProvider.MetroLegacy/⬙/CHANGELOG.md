@@ -11,6 +11,13 @@ ___
 :exclamation: Therefore it is compatible with **.Net Framework 4.5**.
 ___
 
+## 3.1.0 (2020-12-13)
+
+### Updated
+
+- Phoenix.UI.Wpf.Architecture.VMFirst.DialogProvider ~~3.0.0~~ → **3.2.0**
+___
+
 ## 3.0.0 (2020-12-04)
 
 ### Changed
